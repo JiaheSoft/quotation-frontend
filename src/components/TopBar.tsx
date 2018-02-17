@@ -18,12 +18,15 @@ const logo = require("./logo.png");
 interface TopBarProps {
   onLogout?: () => void;
   user?: User | null;
+
+  onReturnHome?: () => void;
 }
 
 export default class TopBar extends React.Component<TopBarProps, {}> {
   public static defaultProps: Partial<TopBarProps> = {
     onLogout: () => { },
-    user: null
+    user: null,
+    onReturnHome: () => { }
   };
 
   public constructor(props: TopBarProps) {
@@ -37,7 +40,7 @@ export default class TopBar extends React.Component<TopBarProps, {}> {
       <div>
         <AppBar color="default" position="static">
           <Toolbar disableGutters>
-            <IconButton>
+            <IconButton onClick={this.props.onReturnHome}>
               <ArrowBack />
             </IconButton>
             <img src={logo} />

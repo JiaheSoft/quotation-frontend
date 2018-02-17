@@ -33,8 +33,10 @@ export default class App extends React.Component<{}, AppState> {
     return <Login onLogin={this.handleLogin} />;
   }
   private mainComp(): JSX.Element {
-    return <Main />;
-  }  
+    return <Main ref={main => this.main = main} />;
+  }
+
+  private main: Main | null = null;
 
   public render(): React.ReactNode {
     return (
@@ -43,6 +45,7 @@ export default class App extends React.Component<{}, AppState> {
         <TopBar
           onLogout={this.handleLogout}
           user={this.state.user}
+          onReturnHome={this.handleReturnHome}
         />
         {this.state.page}
       </div>
@@ -66,14 +69,8 @@ export default class App extends React.Component<{}, AppState> {
   }
 
   private handleReturnHome(): void {
-    if (this.state.user) {
-      this.setState(
-        { page: this.mainComp() }
-      );
-    } else {
-      this.setState(
-        { page: this.loginComp() }
-      );
+    if (this.main) {
+      this.main.backToHome();
     }
   }
 }

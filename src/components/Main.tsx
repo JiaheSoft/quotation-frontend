@@ -6,7 +6,7 @@ import {
 import fixThis from "../util/FixThis";
 
 interface MainState {
-  page?: JSX.Element;
+  page?: React.ReactNode;
 }
 
 export default class Main extends React.Component<{}, MainState> {
@@ -19,7 +19,13 @@ export default class Main extends React.Component<{}, MainState> {
     }
   }
 
-  private homePage(): JSX.Element {
+  public backToHome(): void {
+    this.setState(
+      { page: this.homePage() }
+    )
+  }
+
+  private homePage(): React.ReactNode {
     const pages =
       {
         danLiang: <p>单梁</p>,
@@ -31,16 +37,32 @@ export default class Main extends React.Component<{}, MainState> {
       <div style={{ flexGrow: 1 }}>
         <Grid container spacing={8}>
           <Grid item xs={4}>
-            <Link text="单梁" target={pages.danLiang} />
+            <Link
+              text="单梁"
+              target={pages.danLiang}
+              onOpenLink={this.handleOpenLink}
+            />
           </Grid>
           <Grid item xs={4}>
-            <Link text="双梁" target={pages.shuangLiang} />
+            <Link
+              text="双梁"
+              target={pages.shuangLiang}
+              onOpenLink={this.handleOpenLink}
+            />
           </Grid>
           <Grid item xs={4}>
-            <Link text="葫芦" target={pages.hulu} />
+            <Link
+              text="葫芦"
+              target={pages.hulu}
+              onOpenLink={this.handleOpenLink}
+            />
           </Grid>
           <Grid item xs={12}>
-            <Link text="非标询价" target={pages.custom} />
+            <Link
+              text="非标询价"
+              target={pages.custom}
+              onOpenLink={this.handleOpenLink}
+            />
           </Grid>
         </Grid>
       </div>
@@ -49,16 +71,22 @@ export default class Main extends React.Component<{}, MainState> {
 
   public render(): React.ReactNode {
     return (
-      <div style={{margin: "0.5em"}}>
+      <div style={{ margin: "0.5em" }}>
         {this.state.page}
       </div>
     );
+  }
+
+  private handleOpenLink(target: React.ReactNode)
+    : void {
+    this.setState({ page: target });
   }
 }
 
 interface LinkProps {
   text: string,
-  target: JSX.Element
+  target: JSX.Element,
+  onOpenLink: (target: React.ReactNode) => void;
 }
 
 class Link extends React.Component<LinkProps> {
@@ -72,7 +100,7 @@ class Link extends React.Component<LinkProps> {
       <Button
         variant="raised"
         color="secondary"
-        onClick={() => { }}
+        onClick={(e) => this.props.onOpenLink(this.props.target)}
         fullWidth
       >{this.props.text}
       </Button>
