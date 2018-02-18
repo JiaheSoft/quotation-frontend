@@ -16,6 +16,10 @@ import IconDone from "material-ui-icons/Done";
 import IconDoneAll from "material-ui-icons/DoneAll";
 import IconGroupWork from "material-ui-icons/GroupWork";
 import IconCustom from "material-ui-icons/YoutubeSearchedFor";
+const icon_1 = require("../resources/01.svg");
+const icon_2 = require("../resources/02.svg");
+const icon_3 = require("../resources/03.svg");
+const icon_4 = require("../resources/04.svg");
 
 interface MainState {
   page?: React.ReactNode;
@@ -42,22 +46,26 @@ export default class Main extends React.Component<{}, MainState> {
       [
         {
           title: "单梁",
-          icon: <IconDone />,
+          // icon: <IconDone />,
+          icon: icon_2,
           target: <DanLiang />
         },
         {
           title: "双梁",
-          icon: <IconDoneAll />,
+          // icon: <IconDoneAll />,
+          icon: icon_1,
           target: <ShuangLiang />
         },
         {
           title: "葫芦",
-          icon: <IconGroupWork />,
+          // icon: <IconGroupWork />,
+          icon: icon_3,
           target: <Hulu />
         },
         {
           title: "非标询价",
-          icon: <IconCustom />,
+          // icon: <IconCustom />,
+          icon: icon_4,
           target: <Custom />
         }
       ];
@@ -66,11 +74,26 @@ export default class Main extends React.Component<{}, MainState> {
         <GridList>
           {pages.map(pg => (
             <GridListTile onClick={() => this.handleOpenLink(pg.target)} key={pg.title}>
-              <SvgIcon
+              {/* <SvgIcon
                 style={{ width: "100%", height: "100%", color: "#757ce8" }}
               > {pg.icon}
-              </SvgIcon>
-              <GridListTileBar title={pg.title} />
+              </SvgIcon> */}
+              <img src={pg.icon}
+                style={
+                  {
+                    width: "100%",
+                    height: "100%",
+                    color: "#757ce8"
+                  }
+                } />
+              <GridListTileBar
+                title={
+                  <div style={{ width: "100%", textAlign: "center" }}>
+                    {pg.title}
+                  </div>
+                }
+                style={{ backgroundColor: "black", opacity: 0.7 }}
+              />
             </GridListTile>
           ))}
         </GridList>
