@@ -48,7 +48,7 @@ export default class TopBar extends React.Component<TopBarProps, {}> {
               业务员查询系统
             </Typography> */}
             <Typography variant="subheading" align="left" color="inherit">
-              业务员查询
+              业务经理查询
             </Typography>
             <div style={{ flex: 1 }}></div>
 
