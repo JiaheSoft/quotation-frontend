@@ -7,6 +7,9 @@ import Main from "./Main";
 import fixThis from "../util/FixThis";
 import User from "../model/User";
 
+import { MuiThemeProvider } from "material-ui/styles";
+import { theme } from "./Theme";
+
 interface AppState {
   user: User | null;
   page: JSX.Element;
@@ -42,12 +45,14 @@ export default class App extends React.Component<{}, AppState> {
     return (
       <div>
         <Reboot />
-        <TopBar
-          onLogout={this.handleLogout}
-          user={this.state.user}
-          onReturnHome={this.handleReturnHome}
-        />
-        {this.state.page}
+        <MuiThemeProvider theme={theme}>
+          <TopBar
+            onLogout={this.handleLogout}
+            user={this.state.user}
+            onReturnHome={this.handleReturnHome}
+          />
+          {this.state.page}
+        </MuiThemeProvider>
       </div>
     );
   }

@@ -1,4 +1,7 @@
 import * as React from "react";
+import {
+  Typography
+} from "material-ui";
 import fixThis from "../../util/FixThis";
 
 import Price from "../../model/lookup/Price";
@@ -66,26 +69,32 @@ export default class Common extends React.Component<Props, State> {
 
     return (
       <div>
-        <h1>{this.props.title}</h1>
-        <form>
-          {typeSelector}
-          <TextField
-            label="型号"
-            helperText="格式仿照：ld5t-21m"
-            margin="normal"
-            onChange={this.handleModelChange}
-          />
-          <br />
-          <Button
-            variant="raised"
-            color="primary"
-            disabled={!this.isModelValid()}
-            onClick={(e) => {
-              if (this.props.onLookup)
-                this.props.onLookup(this.state.model, this.state.type);
-            }}
-          >查询</Button>
-        </form>
+        <Typography align="center" variant="headline">{this.props.title}</Typography>
+        <div style={{
+          display: "table",
+          margin: "0 auto"
+        }}>
+          <form>
+            {typeSelector}
+            <TextField
+              label="型号"
+              helperText="格式仿照：ld5t-21m"
+              margin="normal"
+              onChange={this.handleModelChange}
+            />
+            <br />
+            <Button
+              variant="raised"
+              color="primary"
+              disabled={!this.isModelValid()}
+              onClick={(e) => {
+                if (this.props.onLookup)
+                  this.props.onLookup(this.state.model, this.state.type);
+              }}
+              fullWidth
+            >查询</Button>
+          </form>
+        </div>
       </div>
     );
   }
