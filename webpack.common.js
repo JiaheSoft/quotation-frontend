@@ -9,7 +9,6 @@ module.exports = {
         path: __dirname + "/build"
     },
 
-    devtool: "source-map",
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".json"]
     },
@@ -29,7 +28,12 @@ module.exports = {
             {
                 test: /\.(gif|png|jpe?g|svg)$/i,
                 use: [
-                    'file-loader',
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            outputPath: "resources/"
+                        }
+                    },
                     {
                         loader: 'image-webpack-loader',
                         options: {
@@ -41,16 +45,8 @@ module.exports = {
         ]
     },
 
-    externals: {
-        "react": "React",
-        "react-dom": "ReactDOM"
-    },
-
     plugins: [
         new HtmlWebpackPlugin({ template: './src/index.html' })
     ],
 
-    devServer: {
-        port: 9000,
-    }
 };
