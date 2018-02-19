@@ -13,7 +13,7 @@ import fixThis from "../util/FixThis";
 import AccountMenu from "./AccountMenu";
 import User from "../model/User";
 
-const logo = require("./logo.png");
+const logo = require("../resources/logo.png");
 
 interface TopBarProps {
   onLogout?: () => void;
