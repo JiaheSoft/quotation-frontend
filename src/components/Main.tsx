@@ -46,38 +46,34 @@ export default class Main extends React.Component<{}, MainState> {
       [
         {
           title: "单梁",
-          // icon: <IconDone />,
           icon: icon_2,
           target: <DanLiang />
         },
         {
           title: "双梁",
-          // icon: <IconDoneAll />,
           icon: icon_1,
           target: <ShuangLiang />
         },
         {
           title: "葫芦",
-          // icon: <IconGroupWork />,
           icon: icon_3,
           target: <Hulu />
         },
         {
           title: "非标询价",
-          // icon: <IconCustom />,
           icon: icon_4,
           target: <Custom />
         }
       ];
     return (
       <div style={{ flexGrow: 1 }}>
-        <GridList>
+        <GridList cols={2} style={{ margin: "0.5em" }}>
           {pages.map(pg => (
-            <GridListTile onClick={() => this.handleOpenLink(pg.target)} key={pg.title}>
-              {/* <SvgIcon
-                style={{ width: "100%", height: "100%", color: "#757ce8" }}
-              > {pg.icon}
-              </SvgIcon> */}
+            <GridListTile
+              onClick={() => this.handleOpenLink(pg.target)}
+              key={pg.title}
+              style={{ padding: "1em" }}
+            >
               <img src={pg.icon}
                 style={
                   {
