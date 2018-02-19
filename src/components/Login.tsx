@@ -35,7 +35,10 @@ class Login extends React.Component<LoginProps, LoginState> {
 
   public render(): React.ReactNode {
     return (
-      <div>
+      <div style={{
+        display: "table",
+        margin: "0 auto"
+      }}>
         <form>
           <TextField
             value={this.state.username}
@@ -64,6 +67,7 @@ class Login extends React.Component<LoginProps, LoginState> {
           color="primary"
           onClick={this.handleLogin}
           disabled={!this.state.username}
+          fullWidth
         >登录</Button>
 
         <Dialog
@@ -106,7 +110,9 @@ class Login extends React.Component<LoginProps, LoginState> {
       this.setState({
         failed: false
       });
-      user.save();
+      if (this.state.rememberPass) {
+        user.save();
+      }
       if (this.props.onLogin) {
         this.props.onLogin(user);
       }
