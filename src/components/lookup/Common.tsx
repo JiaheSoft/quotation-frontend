@@ -5,6 +5,7 @@ import {
 import fixThis from "../../util/FixThis";
 
 import Price from "../../model/lookup/Price";
+import Model from "../../model/lookup/ProductModel"
 
 import {
   TextField,
@@ -81,6 +82,7 @@ export default class Common extends React.Component<Props, State> {
               helperText="格式仿照：ld5t-21m"
               margin="normal"
               onChange={this.handleModelChange}
+              error={!this.isModelValid()}
             />
             <br />
             <Button
@@ -92,7 +94,7 @@ export default class Common extends React.Component<Props, State> {
                   this.props.onLookup(this.state.model, this.state.type);
               }}
               fullWidth
-            >查询</Button>
+            >查询{this.isModelValid() ? null : "（条件非法）"}</Button>
           </form>
         </div>
       </div>
@@ -100,8 +102,7 @@ export default class Common extends React.Component<Props, State> {
   }
 
   private isModelValid(): boolean {
-
-    return true;
+    return Model.isValidStr(this.state.model);
   }
 
   private handleTypeSelection(event: React.ChangeEvent<HTMLInputElement>): void {

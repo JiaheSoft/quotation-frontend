@@ -11,8 +11,15 @@ export default class ProductModel {
 
   public static fromString(model: string)
     : ProductModel | null {
-    // TODO Validate the model
+    if (ProductModel.isValidStr(model)) {
+      return new ProductModel(model);
+    } else {
+      return null;
+    }
+  }
 
-    return new ProductModel(model);
+  public static isValidStr(model: string) {
+    const pattern: RegExp = /^[a-z]+\d+(?:\.\d+)?t\-\d+(?:\.\d+)?m$/i;
+    return pattern.test(model);
   }
 }
