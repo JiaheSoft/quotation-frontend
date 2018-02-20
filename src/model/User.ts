@@ -1,4 +1,8 @@
 import { FromJSON, ToJSON } from "../util/JSON";
+import {
+  login as loginAsync,
+  Token
+} from "./api/Login";
 
 export default class User implements FromJSON, ToJSON {
   public constructor(name?: string, password?: string) {
@@ -15,6 +19,9 @@ export default class User implements FromJSON, ToJSON {
   private password_: string = "";
   get password() { return this.password_; }
   set password(password: string) { this.password_ = password; }
+
+  private token_: Token | null = null;
+  public get token() { return this.token_; }
 
   toJSON(): string {
     return JSON.stringify({
@@ -43,7 +50,7 @@ export default class User implements FromJSON, ToJSON {
       return null;
     } else {
       let user: User = new User();
-      if (user.fromJSON(lastUserJSON) && user.login()) {
+      if (user.fromJSON(lastUserJSON)) {
         return user;
       } else {
         return null;
@@ -65,8 +72,24 @@ export default class User implements FromJSON, ToJSON {
    * such as role
    * @returns whether the login succeeded
    */
-  public login(): boolean {
-    // TODO calls web api to login.
-    return this.name_ === "admin" && this.password_ === "pwd";
+  public loginAsync(
+    onSuccess?: () => void,
+    onFailure?: (errMsg: string) => void
+  ) {
+    loginAsync(
+      {
+        name: this.name,
+        password: this.password
+      },
+      (token: Token) => {
+        this.token_ = token;
+        if (onSuccess)
+          onSuccess();
+      },
+      (errMsg: string) => {
+        if (onFailure)
+          onFailure(errMsg);
+      }
+    );
   }
 }

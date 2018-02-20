@@ -20,20 +20,23 @@ export default class App extends React.Component<{}, AppState> {
     super(props);
     fixThis(this);
 
-    this.initState();
+    this.state = {
+      user: User.load(),
+      page: <div></div>
+    };
   }
 
-  private initState(): void {
-    let user = User.load();
-    this.state =
-      {
-        user: user,
-        page: user === null ? this.loginComp() : this.mainComp()
-      };
+  public componentDidMount() {
+    this.setState({
+      page: this.loginComp()
+    });
   }
 
   private loginComp(): JSX.Element {
-    return <Login onLogin={this.handleLogin} />;
+    return <Login
+      onLogin={this.handleLogin}
+      defaultUser={this.state.user ? this.state.user : undefined}
+    />;
   }
   private mainComp(): JSX.Element {
     return <Main ref={main => this.main = main} />;
@@ -67,10 +70,10 @@ export default class App extends React.Component<{}, AppState> {
   private handleLogout(): void {
     if (this.state.user)
       this.state.user.logout();
-    this.setState({
-      user: null,
-      page: this.loginComp()
-    });
+    this.setState(
+      { user: null },
+      () => this.setState({ page: this.loginComp() })
+    );
   }
 
   private handleReturnHome(): void {

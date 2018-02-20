@@ -8,6 +8,7 @@ import styled from "styled-components";
 
 interface LoginProps {
   onLogin?: (user: User | null) => void;
+  defaultUser?: User;
 }
 
 interface LoginState {
@@ -16,6 +17,7 @@ interface LoginState {
   rememberPass: boolean,
 
   dialogOpen: boolean,
+  dialogMessage: string,
   failed: boolean,
 }
 
@@ -23,14 +25,31 @@ class Login extends React.Component<LoginProps, LoginState> {
   public constructor(props: LoginProps) {
     super(props);
     fixThis(this);
+    this.setState = this.setState.bind(this);
 
     this.state = {
       username: "",
       password: "",
       rememberPass: true,
       dialogOpen: false,
+      dialogMessage: "用户名或密码错误",
       failed: false
     };
+  }
+
+  public componentDidMount() {
+    let user = this.props.defaultUser;
+    if (user) {
+      let username = user.name;
+      let password = user.password;
+      this.setState(
+        {
+          username,
+          password
+        },
+        () => this.handleLogin()
+      );
+    }
   }
 
   public render(): React.ReactNode {
@@ -74,7 +93,7 @@ class Login extends React.Component<LoginProps, LoginState> {
           open={this.state.dialogOpen}>
           <DialogContent>
             <DialogContentText style={{ color: red[500] }}>
-              用户名或密码错误！
+              {this.state.dialogMessage}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -101,28 +120,32 @@ class Login extends React.Component<LoginProps, LoginState> {
     this.setState({ rememberPass: checked });
   }
 
-  private handleLogin(e: React.MouseEvent<HTMLInputElement>): void {
+  private handleLogin(): void {
     let username: string = this.state.username;
     let password: string = this.state.password;
 
     let user: User = new User(username, password);
-    if (user.login()) {
-      this.setState({
-        failed: false
-      });
-      if (this.state.rememberPass) {
-        user.save();
+    user.loginAsync(
+      () => {
+        if (this.state.rememberPass) {
+          user.save();
+        }
+        this.setState({
+          failed: false
+        });
+        if (this.props.onLogin) {
+          this.props.onLogin(user);
+        }
+      },
+      (errMsg: string) => {
+        this.setState({
+          password: "",
+          failed: true,
+          dialogMessage: errMsg,
+          dialogOpen: true
+        });
       }
-      if (this.props.onLogin) {
-        this.props.onLogin(user);
-      }
-    } else {
-      this.setState({
-        password: "",
-        failed: true,
-        dialogOpen: true
-      });
-    }
+    );
   }
 
   private handleCloseDialog(event: React.MouseEvent<HTMLInputElement>): void {
