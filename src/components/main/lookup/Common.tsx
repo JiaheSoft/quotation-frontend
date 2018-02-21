@@ -2,10 +2,11 @@ import * as React from "react";
 import {
   Typography
 } from "material-ui";
-import fixThis from "../../util/FixThis";
 
-import Price from "../../model/lookup/Price";
-import Model from "../../model/lookup/ProductModel"
+import fixThis from "../../../util/FixThis";
+
+import Price from "../../../model/lookup/Price";
+import Model from "../../../model/lookup/ProductModel"
 
 import {
   TextField,

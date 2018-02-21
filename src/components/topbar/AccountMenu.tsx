@@ -10,8 +10,8 @@ import {
 } from "material-ui";
 import AccountCircle from "material-ui-icons/AccountCircle";
 
-import fixThis from "../util/FixThis";
-import User from "../model/User";
+import fixThis from "../../util/FixThis";
+import User from "../../model/User";
 
 interface AccountMenuProps {
   onLogout?: () => void;
@@ -48,7 +48,7 @@ export default class AccountMenu extends React.Component<AccountMenuProps, Accou
       <div>
         <IconButton
           onClick={this.handleMenuOpen}
-          disabled={this.props.user === null}
+          disabled={!this.props.user}
         ><AccountCircle />
         </IconButton>
 

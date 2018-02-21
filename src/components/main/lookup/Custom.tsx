@@ -1,5 +1,5 @@
 import * as React from "react";
-import fixThis from "../../util/FixThis";
+import fixThis from "../../../util/FixThis";
 
 interface Props {
 

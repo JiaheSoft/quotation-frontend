@@ -70,7 +70,6 @@ export default class User implements FromJSON, ToJSON {
    * Try login with current username and password.
    * If the credential is correct, we setup other fields
    * such as role
-   * @returns whether the login succeeded
    */
   public loginAsync(
     onSuccess?: () => void,

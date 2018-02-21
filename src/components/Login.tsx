@@ -1,5 +1,16 @@
 import * as React from "react";
-import withStyles, { TextField, Button, Checkbox, InputLabel, Dialog, DialogContent, DialogContentText, DialogActions } from "material-ui";
+import {
+  TextField,
+  Button,
+  Checkbox,
+  InputLabel,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions
+} from "material-ui";
+import TopBar from "./topbar/TopBar";
+
 import fixThis from "../util/FixThis";
 import User from "../model/User";
 
@@ -7,7 +18,7 @@ import red from "material-ui/colors/red";
 import styled from "styled-components";
 
 interface LoginProps {
-  onLogin?: (user: User | null) => void;
+  onLogin?: (user: User) => void;
   defaultUser?: User;
 }
 
@@ -53,7 +64,8 @@ class Login extends React.Component<LoginProps, LoginState> {
   }
 
   public render(): React.ReactNode {
-    return (
+    return (<>
+      <TopBar />
       <div style={{
         display: "table",
         margin: "0 auto"
@@ -101,7 +113,7 @@ class Login extends React.Component<LoginProps, LoginState> {
           </DialogActions>
         </Dialog>
       </div>
-    );
+    </>);
   }
 
   private handleUserNameChange(e: React.ChangeEvent<HTMLInputElement>): void {

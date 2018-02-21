@@ -2,8 +2,8 @@ import * as React from "react";
 import { Reboot } from "material-ui";
 
 import Login from "./Login";
-import TopBar from "./TopBar";
-import Main from "./Main";
+import TopBar from "./topbar/TopBar";
+import Main from "./main/Main";
 import fixThis from "../util/FixThis";
 import User from "../model/User";
 
@@ -12,7 +12,7 @@ import { theme } from "./Theme";
 
 interface AppState {
   user: User | null;
-  page: JSX.Element;
+  page: React.ReactNode;
 }
 
 export default class App extends React.Component<{}, AppState> {
@@ -20,65 +20,64 @@ export default class App extends React.Component<{}, AppState> {
     super(props);
     fixThis(this);
 
+    const user = User.load();
     this.state = {
-      user: User.load(),
-      page: <div></div>
+      user: user,
+      page: this.newLoginComponent(user)
     };
   }
 
-  public componentDidMount() {
-    this.setState({
-      page: this.loginComp()
-    });
+  private newLoginComponent(defaultUser: User | null): React.ReactNode {
+    return (
+      <Login
+        onLogin={this.handleLogin}
+        defaultUser={defaultUser ? defaultUser : undefined}
+      />
+    );
   }
 
-  private loginComp(): JSX.Element {
-    return <Login
-      onLogin={this.handleLogin}
-      defaultUser={this.state.user ? this.state.user : undefined}
-    />;
+  private newMainComponent(user: User): React.ReactNode {
+    if (user) {
+      return (
+        <Main
+          user={user}
+          onLogout={this.handleLogout}
+        />
+      );
+    } else {
+      return <></>;
+    }
   }
-  private mainComp(): JSX.Element {
-    return <Main ref={main => this.main = main} />;
-  }
-
-  private main: Main | null = null;
 
   public render(): React.ReactNode {
     return (
       <div>
         <Reboot />
         <MuiThemeProvider theme={theme}>
-          <TopBar
-            onLogout={this.handleLogout}
-            user={this.state.user}
-            onReturnHome={this.handleReturnHome}
-          />
           {this.state.page}
         </MuiThemeProvider>
       </div>
     );
   }
 
-  private handleLogin(user: User | null): void {
+  private handleLogin(user: User): void {
     this.setState({
       user: user,
-      page: this.mainComp()
+      page: this.newMainComponent(user)
     });
   }
 
   private handleLogout(): void {
-    if (this.state.user)
+    let oldUserName: string = "";
+    if (this.state.user) {
+      oldUserName = this.state.user.name;
       this.state.user.logout();
-    this.setState(
-      { user: null },
-      () => this.setState({ page: this.loginComp() })
-    );
-  }
-
-  private handleReturnHome(): void {
-    if (this.main) {
-      this.main.backToHome();
     }
+    this.setState(
+      {
+        user: null,
+        page: this.newLoginComponent(null)
+      }
+    );
   }
 }

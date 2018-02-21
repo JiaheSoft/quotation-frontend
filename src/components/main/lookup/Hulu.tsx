@@ -1,7 +1,7 @@
 import * as React from "react";
-import fixThis from "../../util/FixThis";
+import fixThis from "../../../util/FixThis";
 import Common from "./Common";
-import Price from "../../model/lookup/Price";
+import Price from "../../../model/lookup/Price";
 
 interface Props {
 

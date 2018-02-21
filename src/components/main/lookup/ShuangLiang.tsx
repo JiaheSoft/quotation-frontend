@@ -1,20 +1,18 @@
 import * as React from "react";
-import fixThis from "../../util/FixThis";
-import ProductModel from "../../model/lookup/ProductModel";
-import Price from "../../model/lookup/Price";
-import {
-  TextField,
-  Button
-} from "material-ui";
+import fixThis from "../../../util/FixThis";
 import Common from "./Common";
 
+import Price from "../../../model/lookup/Price";
+
 interface Props {
+
 }
 
 interface State {
+
 }
 
-export default class DanLiang extends React.Component<Props, State> {
+export default class ShuangLiang extends React.Component<Props, State> {
 
   public constructor(props: Props) {
     super(props);
@@ -25,13 +23,14 @@ export default class DanLiang extends React.Component<Props, State> {
     return (
       <Common
         onLookup={this.handleLookup}
-        title="单梁查询"
+        types={["新型", "标准"]}
+        title="双梁查询"
       />
     );
   }
 
   private handleLookup(model: string, type: string): Price | null {
-    alert(`执行单梁查询，model=${model}, type=${type}`);
+    alert(`执行双梁查询，model=${model}, type=${type}`);
     return null;
   }
 }
