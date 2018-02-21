@@ -54,7 +54,7 @@ export default class Shopping extends React.Component<Props, MainState> {
         {
           title: "单梁",
           icon: icon_2,
-          target: <DanLiang />
+          target: <DanLiang user={this.props.user} />
         },
         {
           title: "双梁",

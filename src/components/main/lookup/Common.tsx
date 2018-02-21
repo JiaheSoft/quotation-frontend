@@ -18,7 +18,10 @@ import {
 } from "material-ui";
 
 interface Props {
-  onLookup?: (model: string, type: string) => Price | null;
+  onLookup?: (model: string, type: string,
+    onSuccess: (price: Price) => void,
+    onFailure: (errMsg: string) => void
+  ) => void;
   types?: Array<string>;
   title?: string;
 }
@@ -26,6 +29,8 @@ interface Props {
 interface State {
   model: string;
   type: string;
+
+  result: Price | null;
 }
 
 export default class Common extends React.Component<Props, State> {
@@ -33,12 +38,13 @@ export default class Common extends React.Component<Props, State> {
     {
       onLookup: (m, t) => null,
       types: new Array<string>(0),
-      title: ""
+      title: "",
     };
 
   public constructor(props: Props) {
     super(props);
     fixThis(this);
+    this.setState = this.setState.bind(this);
 
     let defaultType: string = "";
     if (props.types && props.types.length > 0) {
@@ -47,7 +53,8 @@ export default class Common extends React.Component<Props, State> {
     this.state =
       {
         model: "",
-        type: defaultType
+        type: defaultType,
+        result: null
       };
   }
 
@@ -68,6 +75,16 @@ export default class Common extends React.Component<Props, State> {
           <br />
         </div>
       ) : null;
+
+    let result = <p>没有结果</p>;
+    if (this.state.result) {
+      result = (
+        <p>
+          不含税价：{this.state.result.priceWithoutTax} 万元 <br />
+          含税价：{this.state.result.priceWithTax} 万元
+        </p>
+      );
+    }
 
     return (
       <div>
@@ -90,13 +107,11 @@ export default class Common extends React.Component<Props, State> {
               variant="raised"
               color="primary"
               disabled={!this.isModelValid()}
-              onClick={(e) => {
-                if (this.props.onLookup)
-                  this.props.onLookup(this.state.model, this.state.type);
-              }}
+              onClick={this.handleLookup}
               fullWidth
             >查询{this.isModelValid() ? null : "（条件非法）"}</Button>
           </form>
+          {result}
         </div>
       </div>
     );
@@ -116,5 +131,24 @@ export default class Common extends React.Component<Props, State> {
     this.setState({
       model: event.target.value
     });
+  }
+
+  private handleLookup(): void {
+    if (this.props.onLookup) {
+      // this.props.onLookup(this.state.model, this.state.type);
+      this.props.onLookup(this.state.model, this.state.type,
+        (price: Price) => {
+          this.setState({
+            result: price
+          });
+        },
+        (errMsg: string) => {
+          // TODO show error message
+          this.setState({
+            result: null
+          });
+        }
+      );
+    }
   }
 }

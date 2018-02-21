@@ -12,7 +12,7 @@ export class Token {
   }
 
   private token_: string;
-  public get token(): string { return this.token_; }
+  public get tokStr(): string { return this.token_; }
 }
 
 export function login(
