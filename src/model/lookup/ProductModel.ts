@@ -19,7 +19,7 @@ export default class ProductModel {
   }
 
   public static isValidStr(model: string) {
-    const pattern: RegExp = /^[a-z]+\d+(?:\.\d+)?t\-\d+(?:\.\d+)?m$/i;
+    const pattern: RegExp = /^[a-z]+\d+(?:\.\d+)?t?\-\d+(?:\.\d+)?m?$/i;
     return pattern.test(model);
   }
 }
