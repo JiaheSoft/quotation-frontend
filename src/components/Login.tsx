@@ -3,13 +3,10 @@ import {
   TextField,
   Button,
   Checkbox,
-  InputLabel,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogActions
+  InputLabel
 } from "material-ui";
 import TopBar from "./topbar/TopBar";
+import InfoPopup from "./common/InfoPopup";
 
 import fixThis from "../util/FixThis";
 import User from "../model/User";
@@ -29,7 +26,9 @@ interface LoginState {
 
   dialogOpen: boolean,
   dialogMessage: string,
+
   failed: boolean,
+  loggingIn: boolean
 }
 
 class Login extends React.Component<LoginProps, LoginState> {
@@ -44,7 +43,8 @@ class Login extends React.Component<LoginProps, LoginState> {
       rememberPass: true,
       dialogOpen: false,
       dialogMessage: "用户名或密码错误",
-      failed: false
+      failed: false,
+      loggingIn: false
     };
   }
 
@@ -61,6 +61,10 @@ class Login extends React.Component<LoginProps, LoginState> {
         () => this.handleLogin()
       );
     }
+  }
+
+  private loginButtonDisabled(): boolean {
+    return !this.state.username || this.state.loggingIn;
   }
 
   public render(): React.ReactNode {
@@ -97,21 +101,16 @@ class Login extends React.Component<LoginProps, LoginState> {
           variant="raised"
           color="primary"
           onClick={this.handleLogin}
-          disabled={!this.state.username}
+          disabled={this.loginButtonDisabled()}
           fullWidth
-        >登录</Button>
+        >{this.state.loggingIn ? "登录中" : "登录"}</Button>
 
-        <Dialog
-          open={this.state.dialogOpen}>
-          <DialogContent>
-            <DialogContentText style={{ color: red[500] }}>
-              {this.state.dialogMessage}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button variant="raised" color="primary" onClick={this.handleCloseDialog}>好的</Button>
-          </DialogActions>
-        </Dialog>
+        <InfoPopup
+          open={this.state.dialogOpen}
+          onClose={() => this.setState({ dialogOpen: false })}
+          text={this.state.dialogMessage}
+          type="warning"
+        />
       </div>
     </>);
   }
@@ -136,28 +135,32 @@ class Login extends React.Component<LoginProps, LoginState> {
     let username: string = this.state.username;
     let password: string = this.state.password;
 
-    let user: User = new User(username, password);
-    user.loginAsync(
+    this.setState({ loggingIn: true },
       () => {
-        if (this.state.rememberPass) {
-          user.save();
-        }
-        this.setState({
-          failed: false
-        });
-        if (this.props.onLogin) {
-          this.props.onLogin(user);
-        }
-      },
-      (errMsg: string) => {
-        this.setState({
-          password: "",
-          failed: true,
-          dialogMessage: errMsg,
-          dialogOpen: true
-        });
-      }
-    );
+        let user: User = new User(username, password);
+        user.loginAsync(
+          () => {
+            if (this.state.rememberPass) {
+              user.save();
+            }
+            this.setState({
+              failed: false
+            });
+            if (this.props.onLogin) {
+              this.props.onLogin(user);
+            }
+          },
+          (errMsg: string) => {
+            this.setState({
+              password: "",
+              failed: true,
+              dialogMessage: errMsg,
+              dialogOpen: true,
+              loggingIn: false
+            });
+          }
+        );
+      });
   }
 
   private handleCloseDialog(event: React.MouseEvent<HTMLInputElement>): void {
