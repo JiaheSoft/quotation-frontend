@@ -18,12 +18,16 @@ library
       base
     , react-flux
     , text
+    , lens
   exposed-modules:
       JiaheSoft.Quotation.Store.App
+    , JiaheSoft.Quotation.Store.Login
+    , JiaheSoft.Quotation.Model.User
   if impl(ghcjs)
     hs-source-dirs: src/view
     exposed-modules:
         JiaheSoft.Quotation.View.App
+      , JiaheSoft.Quotation.View.Login
     build-depends: ghcjs-base
   default-language: Haskell2010
 
