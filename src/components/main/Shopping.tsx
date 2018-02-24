@@ -75,13 +75,13 @@ export default class Shopping extends React.Component<Props, MainState> {
     return (
       <div>
         {this.newTopBar()}
-        <div style={{ flexGrow: 1 }}>
+        <div>
           <GridList cols={2} style={{ marginLeft: "1em", marginRight: "1em" }}>
             {pages.map(pg => (
               <GridListTile
                 onClick={() => this.handleOpenLink(pg.target)}
                 key={pg.title}
-                style={{ padding: "1em" }}
+                style={{ padding: "0.5em" }}
               >
                 <img src={pg.icon}
                   style={

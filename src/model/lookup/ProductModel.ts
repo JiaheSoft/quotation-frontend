@@ -18,6 +18,10 @@ export default class ProductModel {
     }
   }
 
+  public static fromValidString(validModel: string): ProductModel {
+    return new ProductModel(validModel);
+  }
+
   public static isValidStr(model: string) {
     const pattern: RegExp = /^[a-z]+\d+(?:\.\d+)?t?\-\d+(?:\.\d+)?m?$/i;
     return pattern.test(model);

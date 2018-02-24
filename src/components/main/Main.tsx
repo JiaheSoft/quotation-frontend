@@ -6,7 +6,7 @@ import {
 import ShopIcon from "material-ui-icons/Shop";
 import ShoppingCartIcon from "material-ui-icons/ShoppingCart"
 import Shopping from "./Shopping";
-import Cart from "./Cart";
+import Cart from "./cart/Cart";
 
 import User from "../../model/User";
 import fixThis from "../../util/FixThis";
