@@ -1,0 +1,3 @@
+#!/bin/sh
+
+stack --stack-yaml stack-ghc.yaml test

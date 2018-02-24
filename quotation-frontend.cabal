@@ -1,0 +1,55 @@
+name:           quotation-frontend
+version:        0.1.0.0
+category:       Web
+author:         Zelin Feng
+maintainer:     fengzlin@mail2.sysu.edu.cn
+copyright:      Zelin Feng,
+                2018
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+cabal-version:  >= 1.10
+extra-source-files:
+    README.md
+
+library
+  hs-source-dirs: src/store
+  build-depends:
+      base
+    , react-flux
+    , text
+  exposed-modules:
+      JiaheSoft.Quotation.Store.App
+  if impl(ghcjs)
+    hs-source-dirs: src/view
+    exposed-modules:
+        JiaheSoft.Quotation.View.App
+    build-depends: ghcjs-base
+  default-language: Haskell2010
+
+executable app
+  if !impl(ghcjs)
+    main-is: Dumb.hs
+  if impl(ghcjs)
+    main-is: Main.hs
+  hs-source-dirs: app
+  build-depends:
+      base
+    , quotation-frontend
+    , react-flux
+  default-language: Haskell2010
+
+test-suite app-test
+  type: exitcode-stdio-1.0
+  hs-source-dirs: test
+  main-is: Spec.hs
+  if impl(ghcjs)
+    main-is: Dumb.hs
+  build-depends:
+      base
+    , quotation-frontend
+    , QuickCheck
+    , hspec
+  -- other-modules:
+  --     StoreSpec
+  default-language: Haskell2010

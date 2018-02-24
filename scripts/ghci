@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+set -x
+
+export NODE_PATH=$(npm root):$(npm root --global)
+
+# find out where GHCJS /lib/etc files are located
+GHCJS_LIB_ETC_PATH=$(dirname $(stack path --global-pkg-db))
+# replace irunner.js to enable static file server
+cp scripts/etc/irunner.js ${GHCJS_LIB_ETC_PATH}/irunner.js
+
+# specify a directory to serve static files from
+export GHCJSI_STATIC_DIR=$(pwd)/app/static
+
+# run GHCJSi
+stack ghci $*
