@@ -1,7 +1,6 @@
 #!/bin/sh
 
 set -e
-set -x
 
 export NODE_PATH=$(npm root):$(npm root --global)
 
