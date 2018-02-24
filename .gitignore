@@ -6,3 +6,4 @@ package-lock.json
 .idea/
 src/config/DebugConfig.ts
 src/config/ProdConfig.ts
+.stack-work/
