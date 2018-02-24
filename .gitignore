@@ -1,8 +1,2 @@
-node_modules/
-build/
-package-lock.json
+.stack-work/
 .vscode/
-.vs/
-.idea/
-src/config/DebugConfig.ts
-src/config/ProdConfig.ts
