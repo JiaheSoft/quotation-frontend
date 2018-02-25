@@ -75,7 +75,7 @@ export default class Shopping extends React.Component<Props, MainState> {
     return (
       <div>
         {this.newTopBar()}
-        <div>
+        <div style={{ maxWidth: "40em", display: "table", margin: "0px auto" }}>
           <GridList cols={2} style={{ marginLeft: "1em", marginRight: "1em" }}>
             {pages.map(pg => (
               <GridListTile
