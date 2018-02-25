@@ -10,6 +10,7 @@ import ShuangLiang from "./lookup/ShuangLiang";
 import Hulu from "./lookup/Hulu";
 import Custom from "./lookup/Custom";
 import TopBar from "../topbar/TopBar";
+import Centered from "../common/Centered";
 
 import User from "../../model/User";
 import fixThis from "../../util/FixThis";
@@ -75,7 +76,8 @@ export default class Shopping extends React.Component<Props, MainState> {
     return (
       <div>
         {this.newTopBar()}
-        <div style={{ maxWidth: "40em", display: "table", margin: "0px auto" }}>
+        {/* <div style={{ maxWidth: "40em", display: "table", margin: "0px auto" }}> */}
+        <Centered maxWidth="40em">
           <GridList cols={2} style={{ marginLeft: "1em", marginRight: "1em" }}>
             {pages.map(pg => (
               <GridListTile
@@ -102,7 +104,7 @@ export default class Shopping extends React.Component<Props, MainState> {
               </GridListTile>
             ))}
           </GridList>
-        </div>
+        </Centered>
       </div>);
   }
 
