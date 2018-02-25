@@ -1,4 +1,5 @@
 import * as React from "react";
+import Space from "../common/Space";
 import {
   AppBar,
   Button,
@@ -36,12 +37,12 @@ export default class TopBar extends React.Component<TopBarProps, {}> {
         >
           <Toolbar disableGutters>
             {this.newReturnButton()}
-            <div style={{ flex: 1 }}></div>
+            <Space />
             <img src={logo} />
             <Typography variant="subheading" align="left" color="inherit">
               业务经理查询
             </Typography>
-            <div style={{ flex: 1 }}></div>
+            <Space />
             {this.newAccountMenuButton()}
           </Toolbar>
         </AppBar>
