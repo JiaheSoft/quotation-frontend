@@ -10,6 +10,7 @@ import Cart from "./cart/Cart";
 
 import User from "../../model/User";
 import fixThis from "../../util/FixThis";
+import ItemModel from "../../model/cart/Item";
 
 interface Props {
   user: User;
@@ -56,16 +57,12 @@ export default class Main extends React.Component<Props, State> {
     </>);
   }
 
-  private handleNavChange(event: React.ChangeEvent<{}>, value: React.ReactNode) {
-    this.setState({
-      page: value
-    });
-  }
-
   private newShoppingPage(): React.ReactNode {
     return (
       <Shopping user={this.props.user}
-        onLogout={this.props.onLogout} />
+        onLogout={this.props.onLogout}
+        onAddToCart={this.handleAddToCart}
+        />
     );
   }
 
@@ -74,5 +71,17 @@ export default class Main extends React.Component<Props, State> {
       <Cart user={this.props.user}
         onLogout={this.props.onLogout} />
     );
+  }
+
+  private handleNavChange(event: React.ChangeEvent<{}>, value: React.ReactNode) {
+    this.setState({
+      page: value
+    });
+  }
+
+  private handleAddToCart(item: ItemModel): boolean {
+    // TODO 添加item到购物车。
+
+    return false;
   }
 }

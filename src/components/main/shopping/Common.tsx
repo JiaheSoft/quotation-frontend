@@ -112,6 +112,10 @@ export default class Common extends React.Component<Props, State> {
             >查询{this.isModelValid() ? null : "（条件非法）"}</Button>
           </form>
           {result}
+          {this.state.result &&
+            <Button variant="raised" color="secondary" fullWidth>
+              加入购物车
+            </Button>}
         </div>
       </div>
     );
