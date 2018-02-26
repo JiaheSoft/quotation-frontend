@@ -1,14 +1,6 @@
 import * as React from "react";
 import {
-  Typography
-} from "material-ui";
-
-import fixThis from "../../../util/FixThis";
-
-import Price from "../../../model/lookup/Price";
-import Model from "../../../model/lookup/ProductModel"
-
-import {
+  Typography,
   TextField,
   Button,
   FormControl,
@@ -16,10 +8,23 @@ import {
   Select,
   MenuItem
 } from "material-ui";
+import InfoPopup from "../../common/InfoPopup";
+
+import fixThis from "../../../util/FixThis";
+import Price from "../../../model/lookup/Price";
+import Model from "../../../model/lookup/ProductModel"
+import ItemModel from "../../../model/cart/Item";
+import ProductModel from "../../../model/lookup/ProductModel";
 
 interface Props {
   onLookup?: (model: string, type: string,
     onSuccess: (price: Price) => void,
+    onFailure: (errMsg: string) => void
+  ) => void;
+  onAddToCart?: (
+    model: ProductModel,
+    type: string,
+    onSuccess: (item: ItemModel) => void,
     onFailure: (errMsg: string) => void
   ) => void;
   types?: Array<string>;
@@ -31,6 +36,10 @@ interface State {
   type: string;
 
   result: Price | null;
+
+  dialogOpen: boolean;
+  dialogText: string;
+  dialogType: "info" | "warning";
 }
 
 export default class Common extends React.Component<Props, State> {
@@ -54,7 +63,10 @@ export default class Common extends React.Component<Props, State> {
       {
         model: "",
         type: defaultType,
-        result: null
+        result: null,
+        dialogOpen: false,
+        dialogText: "",
+        dialogType: "info"
       };
   }
 
@@ -113,10 +125,21 @@ export default class Common extends React.Component<Props, State> {
           </form>
           {result}
           {this.state.result &&
-            <Button variant="raised" color="secondary" fullWidth>
+            <Button
+              variant="raised"
+              color="secondary"
+              fullWidth
+              onClick={this.handleAddToCart}
+            >
               加入购物车
             </Button>}
         </div>
+        <InfoPopup
+          open={this.state.dialogOpen}
+          onClose={() => this.setState({ dialogOpen: false })}
+          text={this.state.dialogText}
+          type="info"
+        />
       </div>
     );
   }
@@ -147,9 +170,36 @@ export default class Common extends React.Component<Props, State> {
           });
         },
         (errMsg: string) => {
-          // TODO show error message
           this.setState({
-            result: null
+            result: null,
+            dialogOpen: true,
+            dialogText: errMsg,
+            dialogType: "warning"
+          });
+        }
+      );
+    }
+  }
+
+  private handleAddToCart(): void {
+    const modelStr = this.state.model;
+    const type = this.state.type;
+
+    const model = ProductModel.fromValidString(modelStr);
+    if (this.props.onAddToCart) {
+      this.props.onAddToCart(model, type,
+        (item: ItemModel) => {
+          this.setState({
+            dialogOpen: true,
+            dialogText: "成功加入购物车",
+            dialogType: "info"
+          })
+        },
+        (errMsg: string) => {
+          this.setState({
+            dialogOpen: true,
+            dialogText: errMsg,
+            dialogType: "warning"
           });
         }
       );

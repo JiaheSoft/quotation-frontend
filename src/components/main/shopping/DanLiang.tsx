@@ -9,6 +9,8 @@ import {
 } from "material-ui";
 import Common from "./Common";
 
+import ItemModel from "../../../model/cart/Item";
+import { add as addToCart } from "../../../model/api/Cart";
 import { danLiangPrice } from "../../../model/api/lookup/DanLiang";
 
 interface Props {
@@ -31,6 +33,7 @@ export default class DanLiang extends React.Component<Props, State> {
       <Common
         onLookup={this.handleLookup}
         title="单梁查询"
+        onAddToCart={this.handleAddToCart}
       />
     );
   }
@@ -59,6 +62,26 @@ export default class DanLiang extends React.Component<Props, State> {
           }
         );
       }
+    }
+  }
+
+  private handleAddToCart(
+    model: ProductModel,
+    type: string,
+    onSuccess: (item: ItemModel) => void,
+    onFailure: (errMsg: string) => void
+  ): void {
+    // TODO Reuse this function
+    const item: ItemModel = ItemModel.newItem("单梁", type, model);
+    if (this.props.user.token) {
+      addToCart(this.props.user.token, item,
+        succeed => {
+          if (succeed) {
+            onSuccess(item);
+          } else {
+            onFailure("添加到购物车失败");
+          }
+        });
     }
   }
 }

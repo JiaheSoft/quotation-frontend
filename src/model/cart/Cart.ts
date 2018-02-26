@@ -15,11 +15,18 @@ export default class Cart {
   public static loadAsync(
     user: User,
     onSuccess: (cart: Cart) => void,
-    onFailure: (errMsg: string) => void = () => {}
+    onFailure: (errMsg: string) => void = () => { }
   ): Cart {
     // TODO
 
     return Cart.emptyCart();
+  }
+
+  public addItem(item: Item): Cart {
+    let newCart: Cart = new Cart();
+    Object.assign(newCart, this);
+    newCart.items_.push(item);
+    return newCart;
   }
 
   public updateItemAt(
