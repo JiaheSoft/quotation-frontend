@@ -13,6 +13,7 @@ import CartModel from "../../../model/cart/Cart";
 import ItemModel from "../../../model/cart/Item";
 import * as CartAPI from "../../../model/api/Cart";
 import Space from "../../common/Space";
+import { updateItem, clear } from "../../../model/api/Cart";
 
 interface Props {
   user: User;
@@ -74,7 +75,7 @@ export default class Cart extends React.Component<Props, State> {
           > 清空购物车
           </Button>
         </div>
-        <List>
+        <List disablePadding dense>
           {this.state.cart.items.map((item, index) =>
             // TODO 这里需要优化
             <Item
@@ -94,29 +95,58 @@ export default class Cart extends React.Component<Props, State> {
     this.setState({ cart: newCart });
   }
 
+  private showErrorMessage(msg: string) {
+    this.setState({
+      showErrorMessage: true,
+      errorMessage: msg
+    });
+  }
+
+  private handleQuantityChange(index: number, increaseStep: number) {
+    const oldCart = this.state.cart;
+    const oldItem = oldCart.items[index];
+    const newCart = oldCart.updateItemAt(index, item => item.increaseCount(increaseStep));
+    const newItem = newCart.items[index];
+    if (this.props.user.token) {
+      updateItem(this.props.user.token, newItem.id, newItem.count,
+        () => {
+          this.setState({ cart: newCart });
+        },
+        this.showErrorMessage
+      );
+    }
+  }
+
   private handleIncrease(index: number) {
-    this.updateCart(
-      this.state.cart.updateItemAt(index,
-        item => item.increaseCount())
-    );
+    this.handleQuantityChange(index, 1);
   }
 
   private handleDecrease(index: number) {
-    this.updateCart(
-      this.state.cart.updateItemAt(index,
-        item => item.decreaseCount())
-    );
+    this.handleQuantityChange(index, -1);
   }
 
   private handleRemove(index: number) {
-    this.updateCart(
-      this.state.cart.deleteItemAt(index)
-    );
+    const oldCart = this.state.cart;
+    const oldItem = oldCart.items[index];
+    const newCart = oldCart.deleteItemAt(index);
+    if (this.props.user.token) {
+      updateItem(this.props.user.token, oldItem.id, 0,
+        () => {
+          this.setState({ cart: newCart });
+        },
+        this.showErrorMessage
+      );
+    }
   }
 
   private handleClearCart() {
-    this.setState({
-      cart: CartModel.emptyCart()
-    });
+    if (this.props.user.token) {
+      clear(this.props.user.token,
+        () => {
+          this.setState({ cart: CartModel.emptyCart() });
+        },
+        this.showErrorMessage
+      );
+    }
   }
 }

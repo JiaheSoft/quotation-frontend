@@ -60,3 +60,49 @@ export function getAll(
     onFailure("网络错误");
   });
 }
+
+export function updateItem(
+  userToken: Token,
+  itemId: string,
+  itemQuantity: number,
+  onSuccess: () => void,
+  onFailure: (errMsg: string) => void
+) {
+  const queryParams: string =
+    `token=${userToken.tokStr}&ID=${itemId}&Quantity=${itemQuantity}`;
+  jQuery.ajax({
+    url: ApiBase.apiBaseUrl + "/shoppingcart/update",
+    type: "GET",
+    data: queryParams
+  }).done(response => {
+    if (response.succeed) {
+      onSuccess();
+    } else {
+      onFailure(response.MsgCode);
+    }
+  }).fail(() => {
+    onFailure("网络错误");
+  });
+}
+
+export function clear(
+  userToken: Token,
+  onSuccess: () => void,
+  onFailure: (errMsg: string) => void
+) {
+  const queryParams: string =
+    `token=${userToken.tokStr}`;
+  jQuery.ajax({
+    url: ApiBase.apiBaseUrl + "/shoppingcart/removeall"
+      + `?${queryParams}`,
+    type: "GET"
+  }).done(response => {
+    if (response.succeed) {
+      onSuccess();
+    } else {
+      onFailure(response.MsgCode);
+    }
+  }).fail(() => {
+    onFailure("网络错误");
+  });
+}

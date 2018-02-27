@@ -37,15 +37,16 @@ export default class Item extends React.Component<Props> {
 
   public render(): React.ReactNode {
     return (<>
-      <ListItem>
-        <IconButton onClick={this.props.onIncrease}>
-          <AddCircleOutline />
+      <ListItem disableGutters>
+        <IconButton onClick={this.props.onDecrease}
+          disabled={this.props.item.count <= 1}
+        > <RemoveCircleOutline />
         </IconButton>
         <Typography variant="body2">
           {this.props.item.count}
         </Typography>
-        <IconButton onClick={this.props.onDecrease}>
-          <RemoveCircleOutline />
+        <IconButton onClick={this.props.onIncrease}>
+          <AddCircleOutline />
         </IconButton>
         <Typography variant="body2">
           {this.itemString()}
