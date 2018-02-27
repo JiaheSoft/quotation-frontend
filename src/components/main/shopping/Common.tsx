@@ -15,18 +15,15 @@ import Price from "../../../model/lookup/Price";
 import Model from "../../../model/lookup/ProductModel"
 import ItemModel from "../../../model/cart/Item";
 import ProductModel from "../../../model/lookup/ProductModel";
+import User from "../../../model/User";
+import { addToCart } from "../../../model/api/Cart";
 
 interface Props {
   onLookup?: (model: string, type: string,
     onSuccess: (price: Price) => void,
     onFailure: (errMsg: string) => void
   ) => void;
-  onAddToCart?: (
-    model: ProductModel,
-    type: string,
-    onSuccess: (item: ItemModel) => void,
-    onFailure: (errMsg: string) => void
-  ) => void;
+  user: User;
   names?: Array<string>;
   title?: string;
 }
@@ -183,26 +180,28 @@ export default class Common extends React.Component<Props, State> {
 
   private handleAddToCart(): void {
     const modelStr = this.state.model;
-    const type = this.state.name;
+    const name = this.state.name;
 
     const model = ProductModel.fromValidString(modelStr);
-    if (this.props.onAddToCart) {
-      this.props.onAddToCart(model, type,
-        (item: ItemModel) => {
-          this.setState({
-            dialogOpen: true,
-            dialogText: "成功加入购物车",
-            dialogType: "info"
-          })
-        },
-        (errMsg: string) => {
-          this.setState({
-            dialogOpen: true,
-            dialogText: errMsg,
-            dialogType: "warning"
-          });
-        }
-      );
+    const item = ItemModel.newItem("", name, model);
+    if (this.props.user.token) {
+      addToCart(this.props.user.token, item,
+        (succeed: boolean) => {
+          if (succeed) {
+            this.setState({
+              dialogOpen: true,
+              dialogText: "成功加入购物车",
+              dialogType: "info"
+            });
+          } else {
+            this.setState({
+              dialogOpen: true,
+              dialogText: "添加失败",
+              dialogType: "warning"
+            });
+          }
+        });
     }
   }
+
 }

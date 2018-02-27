@@ -10,18 +10,14 @@ import {
 import Common from "./Common";
 
 import ItemModel from "../../../model/cart/Item";
-import { add as addToCart } from "../../../model/api/Cart";
+import { addToCart } from "../../../model/api/Cart";
 import { danLiangPrice } from "../../../model/api/lookup/DanLiang";
 
 interface Props {
   user: User
 }
 
-interface State {
-  result: Price | null;
-}
-
-export default class DanLiang extends React.Component<Props, State> {
+export default class DanLiang extends React.Component<Props> {
 
   public constructor(props: Props) {
     super(props);
@@ -33,7 +29,7 @@ export default class DanLiang extends React.Component<Props, State> {
       <Common
         onLookup={this.handleLookup}
         title="单梁查询"
-        onAddToCart={this.handleAddToCart}
+        user={this.props.user}
         names={["单梁"]}
       />
     );
@@ -63,26 +59,6 @@ export default class DanLiang extends React.Component<Props, State> {
           }
         );
       }
-    }
-  }
-
-  private handleAddToCart(
-    model: ProductModel,
-    type: string,
-    onSuccess: (item: ItemModel) => void,
-    onFailure: (errMsg: string) => void
-  ): void {
-    // TODO Reuse this function
-    const item: ItemModel = ItemModel.newItem("", "单梁", model);
-    if (this.props.user.token) {
-      addToCart(this.props.user.token, item,
-        succeed => {
-          if (succeed) {
-            onSuccess(item);
-          } else {
-            onFailure("添加到购物车失败");
-          }
-        });
     }
   }
 }

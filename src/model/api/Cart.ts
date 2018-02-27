@@ -5,7 +5,7 @@ import Cart from "../cart/Cart";
 import { Token } from "./Login";
 import ProductModel from "../lookup/ProductModel";
 
-export function add(
+export function addToCart(
   userToken: Token,
   item: Item, // ID will NOT be preserved
   onFinish: (succeeded: boolean) => void)
