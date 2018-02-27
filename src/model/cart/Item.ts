@@ -16,10 +16,11 @@ export default class Item {
   private constructor() {
   }
 
-  public static newItem(id: string, name: string, model: ProductModel): Item {
+  public static newItem(id: string, name: string, count: number, model: ProductModel): Item {
     let item = new Item();
     item.id_ = id;
     item.name_ = name;
+    item.count_ = count;
     item.model_ = model;
     return item;
   }

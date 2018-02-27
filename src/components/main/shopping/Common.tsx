@@ -183,7 +183,7 @@ export default class Common extends React.Component<Props, State> {
     const name = this.state.name;
 
     const model = ProductModel.fromValidString(modelStr);
-    const item = ItemModel.newItem("", name, model);
+    const item = ItemModel.newItem("", name, 1, model);
     if (this.props.user.token) {
       addToCart(this.props.user.token, item,
         (succeed: boolean) => {

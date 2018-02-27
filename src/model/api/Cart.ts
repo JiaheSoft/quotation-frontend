@@ -49,7 +49,7 @@ export function getAll(
       const respObj: Array<any> = response.MsgCode;
       const items = respObj.map(x => {
         const model: ProductModel = new ProductModel(x.InvType, x.InvLength, x.InvWeight);
-        return Item.newItem(x.ID, x.InvName, model);
+        return Item.newItem(x.ID, x.InvName, x.Quantity, model);
       });
       const cart = Cart.fromItems(items);
       onSuccess(cart);
