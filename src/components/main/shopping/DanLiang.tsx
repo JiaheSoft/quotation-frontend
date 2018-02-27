@@ -9,17 +9,15 @@ import {
 } from "material-ui";
 import Common from "./Common";
 
+import ItemModel from "../../../model/cart/Item";
+import { addToCart } from "../../../model/api/Cart";
 import { danLiangPrice } from "../../../model/api/lookup/DanLiang";
 
 interface Props {
   user: User
 }
 
-interface State {
-  result: Price | null;
-}
-
-export default class DanLiang extends React.Component<Props, State> {
+export default class DanLiang extends React.Component<Props> {
 
   public constructor(props: Props) {
     super(props);
@@ -31,6 +29,8 @@ export default class DanLiang extends React.Component<Props, State> {
       <Common
         onLookup={this.handleLookup}
         title="单梁查询"
+        user={this.props.user}
+        names={["单梁"]}
       />
     );
   }

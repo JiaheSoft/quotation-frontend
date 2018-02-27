@@ -7,6 +7,7 @@ import {
 } from "material-ui";
 import TopBar from "./topbar/TopBar";
 import InfoPopup from "./common/InfoPopup";
+import Centered from "./common/Centered";
 
 import fixThis from "../util/FixThis";
 import User from "../model/User";
@@ -70,10 +71,7 @@ class Login extends React.Component<LoginProps, LoginState> {
   public render(): React.ReactNode {
     return (<>
       <TopBar />
-      <div style={{
-        display: "table",
-        margin: "0 auto"
-      }}>
+      <Centered>
         <form>
           <TextField
             value={this.state.username}
@@ -111,7 +109,7 @@ class Login extends React.Component<LoginProps, LoginState> {
           text={this.state.dialogMessage}
           type="warning"
         />
-      </div>
+      </Centered>
     </>);
   }
 

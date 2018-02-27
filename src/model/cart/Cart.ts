@@ -12,14 +12,17 @@ export default class Cart {
     return new Cart();
   }
 
-  public static loadAsync(
-    user: User,
-    onSuccess: (cart: Cart) => void,
-    onFailure: (errMsg: string) => void = () => {}
-  ): Cart {
-    // TODO
+  public static fromItems(items: Item[]): Cart {
+    let cart: Cart = Cart.emptyCart();
+    cart.items_ = items;
+    return cart;
+  }
 
-    return Cart.emptyCart();
+  public addItem(item: Item): Cart {
+    let newCart: Cart = new Cart();
+    Object.assign(newCart, this);
+    newCart.items_.push(item);
+    return newCart;
   }
 
   public updateItemAt(

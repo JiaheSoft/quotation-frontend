@@ -5,14 +5,16 @@ import {
   GridListTile,
   GridListTileBar
 } from "material-ui";
-import DanLiang from "./lookup/DanLiang";
-import ShuangLiang from "./lookup/ShuangLiang";
-import Hulu from "./lookup/Hulu";
-import Custom from "./lookup/Custom";
+import DanLiang from "./shopping/DanLiang";
+import ShuangLiang from "./shopping/ShuangLiang";
+import Hulu from "./shopping/Hulu";
+import Custom from "./shopping/Custom";
 import TopBar from "../topbar/TopBar";
+import Centered from "../common/Centered";
 
 import User from "../../model/User";
 import fixThis from "../../util/FixThis";
+import ItemModel from "../../model/cart/Item";
 
 import IconDone from "material-ui-icons/Done";
 import IconDoneAll from "material-ui-icons/DoneAll";
@@ -26,6 +28,8 @@ const icon_4: string = require("../../resources/04.svg");
 interface Props {
   user: User;
   onLogout: () => void;
+  // 试图将某型号产品加入购物车。返回值表示是否加入成功
+  onAddToCart: (item: ItemModel) => boolean;
 }
 
 interface MainState {
@@ -59,12 +63,12 @@ export default class Shopping extends React.Component<Props, MainState> {
         {
           title: "双梁",
           icon: icon_1,
-          target: <ShuangLiang />
+          target: <ShuangLiang user={this.props.user} />
         },
         {
           title: "葫芦",
           icon: icon_3,
-          target: <Hulu />
+          target: <Hulu user={this.props.user} />
         },
         {
           title: "非标询价",
@@ -75,8 +79,9 @@ export default class Shopping extends React.Component<Props, MainState> {
     return (
       <div>
         {this.newTopBar()}
-        <div>
-          <GridList cols={2} style={{ marginLeft: "1em", marginRight: "1em" }}>
+        {/* <div style={{ maxWidth: "40em", display: "table", margin: "0px auto" }}> */}
+        <Centered maxWidth="40em">
+          <GridList cols={2} style={{ margin: "1.5em" }}>
             {pages.map(pg => (
               <GridListTile
                 onClick={() => this.handleOpenLink(pg.target)}
@@ -102,7 +107,7 @@ export default class Shopping extends React.Component<Props, MainState> {
               </GridListTile>
             ))}
           </GridList>
-        </div>
+        </Centered>
       </div>);
   }
 
