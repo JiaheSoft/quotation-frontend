@@ -22,7 +22,7 @@ export function shuangLiangPrice(
     data:
       {
         SLClass: param.name,
-        InvType: param.model.type,
+        TypeName: param.model.type,
         DunWei: new String(param.model.weight),
         KuaDu: new String(param.model.length)
       }
