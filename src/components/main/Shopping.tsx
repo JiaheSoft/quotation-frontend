@@ -81,7 +81,7 @@ export default class Shopping extends React.Component<Props, MainState> {
         {this.newTopBar()}
         {/* <div style={{ maxWidth: "40em", display: "table", margin: "0px auto" }}> */}
         <Centered maxWidth="40em">
-          <GridList cols={2} style={{ marginLeft: "1em", marginRight: "1em" }}>
+          <GridList cols={2} style={{ margin: "1.5em" }}>
             {pages.map(pg => (
               <GridListTile
                 onClick={() => this.handleOpenLink(pg.target)}

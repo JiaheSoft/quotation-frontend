@@ -13,7 +13,7 @@ export default class ProductModel {
     return `${this.type_}${this.weight_}t-${this.length_}m`;
   }
 
-  private constructor(type: string, length: number, weight: number) {
+  public constructor(type: string, length: number, weight: number) {
     this.type_ = type;
     this.length_ = length;
     this.weight_ = weight;

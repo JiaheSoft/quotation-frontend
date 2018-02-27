@@ -32,24 +32,22 @@ export default class Item extends React.Component<Props> {
 
   private itemString(): string {
     const item = this.props.item;
-    return `${item.type}(${item.model})`;
+    return `${item.name}（${item.model.modelStr}）`;
   }
 
   public render(): React.ReactNode {
-    return (
-      <ListItem key={this.itemString()}>
+    return (<>
+      <ListItem>
         <IconButton onClick={this.props.onIncrease}>
           <AddCircleOutline />
         </IconButton>
-        <TextField
-          value={this.props.item.count}
-          disabled
-          style={{ width: "3em" }}
-        />
+        <Typography variant="body2">
+          {this.props.item.count}
+        </Typography>
         <IconButton onClick={this.props.onDecrease}>
           <RemoveCircleOutline />
         </IconButton>
-        <Typography variant="body1">
+        <Typography variant="body2">
           {this.itemString()}
         </Typography>
 
@@ -58,6 +56,6 @@ export default class Item extends React.Component<Props> {
           <Clear />
         </IconButton>
       </ListItem>
-    );
+    </>);
   }
 }

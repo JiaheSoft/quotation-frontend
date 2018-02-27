@@ -24,7 +24,7 @@ export function danLiangPrice(
     data: queryString
   }).done(resp => {
     if (resp.succeed) {
-      const msgCode = JSON.parse(resp.MsgCode);
+      const msgCode = resp.MsgCode;
       const priceIncludingTax = msgCode.priceIncludingTax;
       const priceExcludingTax = msgCode.priceExcludingTax;
       onSuccess(new Price(priceIncludingTax, priceExcludingTax));

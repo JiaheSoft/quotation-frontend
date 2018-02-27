@@ -11,6 +11,8 @@ import fixThis from "../../../util/FixThis";
 import User from "../../../model/User";
 import CartModel from "../../../model/cart/Cart";
 import ItemModel from "../../../model/cart/Item";
+import * as CartAPI from "../../../model/api/Cart";
+import Space from "../../common/Space";
 
 interface Props {
   user: User;
@@ -29,6 +31,7 @@ export default class Cart extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props);
     fixThis(this);
+    this.setState = this.setState.bind(this);
     this.state = {
       cart: CartModel.emptyCart(),
       selected: new Array<boolean>(0),
@@ -38,18 +41,19 @@ export default class Cart extends React.Component<Props, State> {
   }
 
   public componentDidMount() {
-    CartModel.loadAsync(this.props.user,
-      (cart: CartModel) => {
-        this.setState({ cart: cart }
-        );
-      },
-      (errMsg: string) => {
-        this.setState({
-          showErrorMessage: true,
-          errorMessage: errMsg
-        });
-      }
-    );
+    if (this.props.user.token) {
+      CartAPI.getAll(this.props.user.token,
+        (cart: CartModel) => {
+          this.setState({ cart });
+        },
+        (errMsg: string) => {
+          this.setState({
+            errorMessage: errMsg,
+            showErrorMessage: true
+          });
+        }
+      );
+    }
   }
 
   public render(): React.ReactNode {
@@ -57,26 +61,32 @@ export default class Cart extends React.Component<Props, State> {
       <TopBar user={this.props.user}
         onLogout={this.props.onLogout}
       />
-      <InfoPopup
-        open={this.state.showErrorMessage}
-        onClose={() => this.setState({ showErrorMessage: false })}
-        text={this.state.errorMessage}
-        type="warning"
-      />
-      <Button variant="raised">
-        清空购物车
-      </Button>
-      <List>
-        {this.state.cart.items.map((item, index) => {
-          // TODO 这里需要优化
-          <Item
-            item={item}
-            onIncrease={() => this.handleIncrease(index)}
-            onDecrease={() => this.handleDecrease(index)}
-            onRemove={() => this.handleRemove(index)}
-          />
-        })}
-      </List>
+      <div style={{ padding: "1.5em" }}>
+        <InfoPopup
+          open={this.state.showErrorMessage}
+          onClose={() => this.setState({ showErrorMessage: false })}
+          text={this.state.errorMessage}
+          type="warning"
+        />
+        <div style={{ textAlign: "right" }}>
+          <Button variant="raised" color="primary"
+            onClick={this.handleClearCart}
+          > 清空购物车
+          </Button>
+        </div>
+        <List>
+          {this.state.cart.items.map((item, index) =>
+            // TODO 这里需要优化
+            <Item
+              key={index}
+              item={item}
+              onIncrease={() => this.handleIncrease(index)}
+              onDecrease={() => this.handleDecrease(index)}
+              onRemove={() => this.handleRemove(index)}
+            />
+          )}
+        </List>
+      </div>
     </>);
   }
 
@@ -102,5 +112,11 @@ export default class Cart extends React.Component<Props, State> {
     this.updateCart(
       this.state.cart.deleteItemAt(index)
     );
+  }
+
+  private handleClearCart() {
+    this.setState({
+      cart: CartModel.emptyCart()
+    });
   }
 }

@@ -30,9 +30,7 @@ export default class TopBar extends React.Component<TopBarProps, {}> {
 
   public render(): React.ReactNode {
     return (
-      <div
-        style={{ marginBottom: "1em" }}
-      >
+      <div>
         <AppBar color="default" position="static"
         >
           <Toolbar disableGutters>

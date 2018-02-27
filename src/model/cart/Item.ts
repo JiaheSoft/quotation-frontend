@@ -1,14 +1,11 @@
 import ProductModel from "../lookup/ProductModel";
 
 export default class Item {
-  private id_: number = -1;
-  public get id(): number { return this.id_; }
+  private id_: string = "";
+  public get id(): string { return this.id_; }
 
   private name_: string = "";
   public get name(): string { return this.name_; }
-
-  private type_: string = "";
-  public get type(): string { return this.type_; }
 
   private model_: ProductModel = ProductModel.fromValidString("ld5t-21m");
   public get model(): ProductModel { return this.model_; }
@@ -19,10 +16,10 @@ export default class Item {
   private constructor() {
   }
 
-  public static newItem(name: string, type: string, model: ProductModel): Item {
+  public static newItem(id: string, name: string, model: ProductModel): Item {
     let item = new Item();
+    item.id_ = id;
     item.name_ = name;
-    item.type_ = type;
     item.model_ = model;
     return item;
   }

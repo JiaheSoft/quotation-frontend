@@ -23,7 +23,7 @@ export default class ShuangLiang extends React.Component<Props, State> {
     return (
       <Common
         onLookup={this.handleLookup}
-        types={["新型", "标准"]}
+        names={["新型双梁", "标准双梁"]}
         title="双梁查询"
       />
     );

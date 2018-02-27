@@ -34,6 +34,7 @@ export default class DanLiang extends React.Component<Props, State> {
         onLookup={this.handleLookup}
         title="单梁查询"
         onAddToCart={this.handleAddToCart}
+        names={["单梁"]}
       />
     );
   }
@@ -72,7 +73,7 @@ export default class DanLiang extends React.Component<Props, State> {
     onFailure: (errMsg: string) => void
   ): void {
     // TODO Reuse this function
-    const item: ItemModel = ItemModel.newItem("单梁", type, model);
+    const item: ItemModel = ItemModel.newItem("", "单梁", model);
     if (this.props.user.token) {
       addToCart(this.props.user.token, item,
         succeed => {

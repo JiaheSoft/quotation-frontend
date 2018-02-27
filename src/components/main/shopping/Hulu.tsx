@@ -22,7 +22,7 @@ export default class Hulu extends React.Component<Props, State> {
     return (
       <Common
         title="葫芦查询"
-        types={["普通", "防爆", "国产欧式", "进口欧式"]}
+        names={["普通葫芦", "防爆葫芦", "国产欧式葫芦", "进口欧式葫芦"]}
         onLookup={this.handleLookup}
       />
     );

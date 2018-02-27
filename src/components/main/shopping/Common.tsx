@@ -27,13 +27,13 @@ interface Props {
     onSuccess: (item: ItemModel) => void,
     onFailure: (errMsg: string) => void
   ) => void;
-  types?: Array<string>;
+  names?: Array<string>;
   title?: string;
 }
 
 interface State {
   model: string;
-  type: string;
+  name: string;
 
   result: Price | null;
 
@@ -46,7 +46,7 @@ export default class Common extends React.Component<Props, State> {
   public static defaultProps: Partial<Props> =
     {
       onLookup: (m, t) => null,
-      types: new Array<string>(0),
+      names: new Array<string>(0),
       title: "",
     };
 
@@ -56,13 +56,13 @@ export default class Common extends React.Component<Props, State> {
     this.setState = this.setState.bind(this);
 
     let defaultType: string = "";
-    if (props.types && props.types.length > 0) {
-      defaultType = props.types[0];
+    if (props.names && props.names.length > 0) {
+      defaultType = props.names[0];
     }
     this.state =
       {
         model: "",
-        type: defaultType,
+        name: defaultType,
         result: null,
         dialogOpen: false,
         dialogText: "",
@@ -71,15 +71,15 @@ export default class Common extends React.Component<Props, State> {
   }
 
   public render(): React.ReactNode {
-    const typeSelector = this.props.types !== undefined &&
-      this.props.types.length !== 0 ? (
+    const typeSelector = this.props.names !== undefined &&
+      this.props.names.length > 1 ? (
         <div>
-          <FormControl> <InputLabel htmlFor="type">类别</InputLabel>
+          <FormControl> <InputLabel htmlFor="name">名称</InputLabel>
             <Select
-              value={this.state.type}
+              value={this.state.name}
               onChange={this.handleTypeSelection}
             >
-              {this.props.types ? this.props.types.map(t => (
+              {this.props.names ? this.props.names.map(t => (
                 <MenuItem value={t} key={t}>{t}</MenuItem>
               )) : null}
             </Select>
@@ -150,7 +150,7 @@ export default class Common extends React.Component<Props, State> {
 
   private handleTypeSelection(event: React.ChangeEvent<HTMLInputElement>): void {
     this.setState({
-      type: event.target.value
+      name: event.target.value
     });
   }
 
@@ -163,7 +163,7 @@ export default class Common extends React.Component<Props, State> {
   private handleLookup(): void {
     if (this.props.onLookup) {
       // this.props.onLookup(this.state.model, this.state.type);
-      this.props.onLookup(this.state.model, this.state.type,
+      this.props.onLookup(this.state.model, this.state.name,
         (price: Price) => {
           this.setState({
             result: price
@@ -183,7 +183,7 @@ export default class Common extends React.Component<Props, State> {
 
   private handleAddToCart(): void {
     const modelStr = this.state.model;
-    const type = this.state.type;
+    const type = this.state.name;
 
     const model = ProductModel.fromValidString(modelStr);
     if (this.props.onAddToCart) {
