@@ -15,13 +15,17 @@ export function danLiangPrice(
   onSuccess: (price: Price) => void,
   onFailure: (errMsg: string) => void
 ): void {
-  const queryString: string =
-    `token=${param.token.tokStr}&modelstr=${param.model.modelStr}`;
   jQuery.ajax({
-    url: apiBaseUrl + "/danliang/getmodel",
-    type: "GET",
+    url: apiBaseUrl + "/danliang/getmodel"
+      + `?token=${param.token.tokStr}`,
+    type: "POST",
     dataType: "json",
-    data: queryString
+    data:
+      {
+        TypeName: param.model.type,
+        DunWei: new String(param.model.weight),
+        Kuadu: new String(param.model.length)
+      }
   }).done(resp => {
     if (resp.succeed) {
       const msgCode = resp.MsgCode;

@@ -14,13 +14,18 @@ export function shuangLiangPrice(
   param: LookupParam,
   onSuccess: (price: Price) => void,
   onFailure: (errMsg: string) => void) {
-  const queryParams: string =
-    `token=${param.token.tokStr}&modelStr=${param.model.modelStr}&strSLClass=${param.name}`;
   jQuery.ajax({
-    url: apiBaseUrl + "/shuangliang/getmodel",
-    type: "GET",
+    url: apiBaseUrl + "/shuangliang/getmodel"
+      + '?' + `token=${param.token.tokStr}`,
+    type: "POST",
     dataType: "json",
-    data: queryParams
+    data:
+      {
+        SLClass: param.name,
+        InvType: param.model.type,
+        DunWei: new String(param.model.weight),
+        KuaDu: new String(param.model.length)
+      }
   }).done(response => {
     if (response.succeed) {
       const priceIncludingTax = Number.parseFloat(response.MsgCode.priceIncludingTax);
