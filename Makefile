@@ -1,6 +1,6 @@
 all: pack
 
-.PHONY: test
+.PHONY: test cleanPack
 
 build:
 	stack build
@@ -11,5 +11,9 @@ test:
 haddock:
 	stack haddock
 
+binDir = $(shell stack path --local-install-root)
 pack: haddock
-	echo "packaging not implemented"
+	bash scripts/pack
+
+cleanPack:
+	rm -rf build/*.js build/dist build/deps
