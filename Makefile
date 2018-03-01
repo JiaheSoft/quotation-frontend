@@ -1,6 +1,6 @@
 all: pack
 
-.PHONY: test cleanPack
+.PHONY: test cleanPack build
 
 build:
 	stack build

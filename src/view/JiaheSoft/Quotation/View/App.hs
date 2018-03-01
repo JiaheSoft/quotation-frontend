@@ -11,7 +11,7 @@ appView :: ReactView ()
 appView = defineView "App" $ \_ ->
   div_ $ do
     p_ "The App"
-    login_ (LoginProps Nothing)
+    login_
 
 app_ :: ReactElementM eventHandler ()
 app_ = view appView () mempty

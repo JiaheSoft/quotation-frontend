@@ -40,9 +40,7 @@ dispatch a = [SomeStoreAction store a]
 
 instance StoreData State where
   type StoreAction State = Action
-  transform (ChangeUsername newName) state = do
-    putStrLn $ show newName
-    pure $ Lens.set username newName state
+  transform (ChangeUsername newName) state = pure $ Lens.set username newName state
   transform (ChangePassword newPwd) state = pure $ Lens.set password newPwd state
   transform Login state = do
     putStrLn ("Username: " ++ show (Lens.view username state))
