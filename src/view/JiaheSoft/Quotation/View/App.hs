@@ -3,11 +3,15 @@
 
 module JiaheSoft.Quotation.View.App where
 
-import           React.Flux
+import           JiaheSoft.Quotation.View.Import
+
+import           JiaheSoft.Quotation.View.Login
 
 appView :: ReactView ()
-appView = defineView "app" $ \_ ->
-  p_ "The App"
+appView = defineView "App" $ \_ ->
+  div_ $ do
+    p_ "The App"
+    login_ (LoginProps Nothing)
 
 app_ :: ReactElementM eventHandler ()
 app_ = view appView () mempty

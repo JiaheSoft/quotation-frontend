@@ -1,22 +1,26 @@
+{-# LANGUAGE DeriveAnyClass  #-}
+{-# LANGUAGE DeriveGeneric   #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module JiaheSoft.Quotation.Model.User
   ( User
-  , name
+  , makeUser
+  , username
   , password
+  , authToken
   ) where
 
-import           Control.Lens (makeLenses)
-import           Data.Text    (Text)
+import           JiaheSoft.Quotation.Model.Import
 
 data User = User
-  { _name     :: !Text
-  , _password :: !Text
-  } deriving (Show, Eq)
+  { _username  :: !Text
+  , _password  :: !Text
+  , _authToken :: Maybe Text
+  } deriving (Show, Eq, Typeable, Generic, NFData)
 
 makeUser :: Text -- ^username
          -> Text -- ^password
          -> User -- ^the result
-makeUser = User
+makeUser name pwd = User name pwd Nothing
 
 makeLenses ''User
