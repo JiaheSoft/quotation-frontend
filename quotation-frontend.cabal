@@ -31,9 +31,11 @@ library
   if impl(ghcjs)
     hs-source-dirs: src/view
     exposed-modules:
-        JiaheSoft.Quotation.View.Import
-      , JiaheSoft.Quotation.View.App
+        JiaheSoft.Quotation.View.App
+      , JiaheSoft.React.MaterialUI
       , JiaheSoft.Quotation.View.Login
+    other-modules:
+        JiaheSoft.Quotation.View.Import
     build-depends: ghcjs-base
   default-language: Haskell2010
 

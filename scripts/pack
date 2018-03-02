@@ -24,35 +24,16 @@ fi
 binDir=`stack path --local-install-root`
 cp ${binDir}/bin/app.jsexe/all.js app.js
 
-# Download dependencies
-declare -a dependencies=(
-  "https://cdn.jsdelivr.net/npm/create-react-class@15/create-react-class.min.js"
-)
-rm -rf deps
-mkdir -p deps
-cd deps
-for x in "${dependencies[@]}"; do
-  wget "$x"
-done
-echo "React.createClass = createReactClass;" >>create-react-class.min.js
-cd ..
-
-# Run closure compiler on app.js and dependencies
-depStr=""
-for x in "${dependencies[@]}"; do
-  name=`basename $x`
-  depStr+=" deps/$name"
-done
+# Run closure compiler on app.js
 # NOTE: We can't enable ADVANCED optimization for now.
 # We have to find or write extern files for react and react-dom
 # See https://blogs.missouristate.edu/web/2013/09/12/how-to-write-closure-compiler-extern-files-part-1-the-basics/
 java -jar utils/closure-compiler.jar \
   --compilation_level SIMPLE \
   --jscomp_off="*" \
-  --js $depStr app.js \
-  --js_output_file bundle.js
-rm -rf deps
-mv -f bundle.js app.js
+  --js app.js \
+  --js_output_file app.min.js
+mv -f app.min.js app.js
 
 # Finally, copy static files and app.js into 'dist'
 rm -rf dist
