@@ -31,6 +31,7 @@ module JiaheSoft.React.MaterialUI
   , icon_
   , iconButton_
   , input_
+  , inputLabel_
   , list_
   , menu_
   , mobileStepper_
@@ -89,8 +90,8 @@ buttonBase_ = muiClass "ButtonBase"
 card_ :: [PropertyOrHandler handler] -> ReactElementM handler () -> ReactElementM handler ()
 card_ = muiClass "Card"
 
-checkbox_ :: [PropertyOrHandler handler] -> ReactElementM handler () -> ReactElementM handler ()
-checkbox_ = muiClass "Checkbox"
+checkbox_ :: [PropertyOrHandler handler] -> ReactElementM handler ()
+checkbox_ props = muiClass "Checkbox" props mempty
 
 chip_ :: [PropertyOrHandler handler] -> ReactElementM handler () -> ReactElementM handler ()
 chip_ = muiClass "Chip"
@@ -127,6 +128,9 @@ iconButton_ = muiClass "IconButton"
 
 input_ :: [PropertyOrHandler handler] -> ReactElementM handler () -> ReactElementM handler ()
 input_ = muiClass "Input"
+
+inputLabel_ :: [PropertyOrHandler handler] -> ReactElementM handler () -> ReactElementM handler ()
+inputLabel_ = muiClass "InputLabel"
 
 list_ :: [PropertyOrHandler handler] -> ReactElementM handler () -> ReactElementM handler ()
 list_ = muiClass "List"

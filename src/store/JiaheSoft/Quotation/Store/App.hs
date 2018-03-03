@@ -8,6 +8,7 @@ Top level store of our app, holding user login info.
 module JiaheSoft.Quotation.Store.App
   ( State(..)
   , Action(..)
+  , store
   ) where
 
 import           JiaheSoft.Quotation.Store.Import
