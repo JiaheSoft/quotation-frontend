@@ -29,7 +29,7 @@ cp ${binDir}/bin/app.jsexe/all.js app.js
 # We have to find or write extern files for react and react-dom
 # See https://blogs.missouristate.edu/web/2013/09/12/how-to-write-closure-compiler-extern-files-part-1-the-basics/
 java -jar utils/closure-compiler.jar \
-  --compilation_level SIMPLE \
+  --compilation_level ADVANCED \
   --jscomp_off="*" \
   --js app.js \
   --js_output_file app.min.js

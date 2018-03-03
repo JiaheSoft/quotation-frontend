@@ -19,14 +19,16 @@ loginView = defineControllerView "Login" Login.store $ \store () ->
     MUI.textField_
       [ "label" $= "用户名"
       ] mempty
+    br_ []
     MUI.textField_
       [ "label" $= "密码"
       , "type" $= "password"
       ] mempty
-    -- MUI.button_
-    --   [ "variant" $= "raised"
-    --   , "color" $= "primary"
-    --   ] mempty
+    br_ []
+    MUI.button_
+      [ "variant" $= "raised"
+      , "color" $= "primary"
+      ] "登录"
 
 login_ :: ReactElementM eventHandler ()
 login_ = view loginView () mempty

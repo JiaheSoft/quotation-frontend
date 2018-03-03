@@ -7,13 +7,20 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Development</title>
 
+  <!-- react & react-dom -->
   <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script crossorigin src="https://cdn.jsdelivr.net/npm/create-react-class@15/create-react-class.js"></script>
   <script>
     React.createClass = createReactClass;
   </script>
-  <script crossorigin src="js/material-ui-v1.0.0-beta.35.js"></script>
+
+  <!-- material-ui -->
+  <script crossorigin="anonymous" src="https://unpkg.com/react-transition-group@2.2.1/dist/react-transition-group.js"></script>
+  <script>
+    window["react-transition-group/TransitionGroup"] = ReactTransitionGroup.TransitionGroup;
+  </script>
+  <script crossorigin src="js/material-ui-v1.0.0-beta.35.dev.js"></script>
 
   <!-- Do not remove this script!                                   -->
   <!-- It is needed for proper GHCJSi integration                   -->
