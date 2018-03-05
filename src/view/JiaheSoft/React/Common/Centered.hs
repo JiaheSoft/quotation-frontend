@@ -1,4 +1,3 @@
-{-# LANGUAGE BangPatterns      #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module JiaheSoft.React.Common.Centered
@@ -20,4 +19,4 @@ centeredView = defineView "Centered" $ \maxWidth ->
 centered_ :: Text -- ^the max width
           -> ReactElementM ViewEventHandler a -- ^children
           -> ReactElementM ViewEventHandler a
-centered_ !maxWidth !children = view centeredView maxWidth children
+centered_ = view centeredView

@@ -16,50 +16,37 @@ import           JiaheSoft.Quotation.Model.User  (User)
 import qualified JiaheSoft.Quotation.Model.User  as User
 import qualified JiaheSoft.Quotation.Store.Login as Login
 
-import           GHCJS.Types                     (JSVal)
-
-foreign import javascript unsafe
-  "$r = undefined"
-  jsUndefined :: JSVal
-
 loginView :: ReactView ()
 loginView = defineControllerView "Login" Login.store $ \state () ->
   centered_ "" $ do
-    div_
-      [ "key" $= "123"
-      ] $ do
-      let username = Lens.view Login.username state
-      let password = Lens.view Login.password state
-      form_ [] $ do
-        MUI.textField_
-          [ "label" $= "用户名"
-          , "value" @= username
-          , onChange handleUsernameChange
-          ] mempty
-        br_ []
-        MUI.textField_
-          [ "label" $= "密码"
-          , "type" $= "password"
-          , "value" @= password
-          , onChange handlePasswordChange
-          ] mempty
-        br_ []
-        MUI.inputLabel_
-          [] "记住密码"
-        let rememberPassword = Lens.view Login.rememberPassword state
-        MUI.checkbox_
-          [ "checked" @= rememberPassword
-          , onChange handleRemPwdChange
-          ]
-      MUI.button_
-        [ "variant" $= "raised"
-        , "color" $= "primary"
-        , onClick handleLogin
-        ] "登录"
+    let username = Lens.view Login.username state
+    let password = Lens.view Login.password state
+    form_ [] $ do
+      MUI.textField_
+        [ "label" $= "用户名"
+        , "value" @= username
+        , onChange handleUsernameChange
+        ] mempty
       br_ []
-      p_ $ do
-        fromString $ Text.unpack ("Username: " <> username <> "\n")
-        fromString $ Text.unpack ("Password: " <> password <> "\n")
+      MUI.textField_
+        [ "label" $= "密码"
+        , "type" $= "password"
+        , "value" @= password
+        , onChange handlePasswordChange
+        ] mempty
+      br_ []
+      MUI.inputLabel_
+        [] "记住密码"
+      let rememberPassword = Lens.view Login.rememberPassword state
+      MUI.checkbox_
+        [ "checked" @= rememberPassword
+        , onChange handleRemPwdChange
+        ]
+    MUI.button_
+      [ "variant" $= "raised"
+      , "color" $= "primary"
+      , onClick handleLogin
+      ] "登录"
 
 login_ :: ReactElementM eventHandler ()
 login_ = view loginView () mempty

@@ -12,9 +12,7 @@ import           JiaheSoft.Quotation.View.Login
 appView :: ReactView ()
 appView = defineView "App" $ \_ ->
   div_ $ do
-    p_
-      [ "key" @= (0 :: Int)
-      ] "The App"
+    p_ "The App"
     login_
 
 app_ :: ReactElementM eventHandler ()
