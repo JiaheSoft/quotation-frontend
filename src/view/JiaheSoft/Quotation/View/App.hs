@@ -1,19 +1,17 @@
-{-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedStrings     #-}
-
 module JiaheSoft.Quotation.View.App
   ( appView
   ) where
 
-import           JiaheSoft.Quotation.View.Import
+import qualified Control.Lens                    as Lens
+import           Data.Maybe                      (isNothing)
 
+import qualified JiaheSoft.Quotation.Store.App   as App
+import           JiaheSoft.Quotation.View.Import
 import           JiaheSoft.Quotation.View.Login
+-- import qualified JiaheSoft.React.MaterialUI      as MUI
 
 appView :: ReactView ()
-appView = defineView "App" $ \_ ->
+appView = defineControllerView "App" App.store $ \state () -> do
+  let loginDialogOpen = isNothing $ Lens.view App.user state
   div_ $ do
-    p_ "The App"
-    login_
-
-app_ :: ReactElementM eventHandler ()
-app_ = view appView () mempty
+    login_ loginDialogOpen

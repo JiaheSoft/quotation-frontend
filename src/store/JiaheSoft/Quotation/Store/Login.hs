@@ -1,9 +1,3 @@
-{-# LANGUAGE DeriveAnyClass    #-}
-{-# LANGUAGE DeriveGeneric     #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell   #-}
-{-# LANGUAGE TypeFamilies      #-}
-
 {-|
 / This module is intended to be imported qualified. /
 -}
@@ -20,15 +14,16 @@ module JiaheSoft.Quotation.Store.Login
 import qualified Control.Lens                     as Lens
 import           JiaheSoft.Quotation.Store.Import
 
+import qualified JiaheSoft.Quotation.Store.App    as App
+
 data State = State
   { _username         :: !Text
   , _password         :: !Text
   , _rememberPassword :: !Bool
   } deriving (Show, Typeable)
 
-Lens.makeLenses ''State
+makeLenses ''State
 
-{-# NOLINE store #-}
 store :: ReactStore State
 store = mkStore (State "" "" True)
 
@@ -49,7 +44,9 @@ instance StoreData State where
   transform ToggleRememberPassword state = pure $
     Lens.over rememberPassword not state
   transform Login state = do
-    putStrLn ("Username: " ++ show (Lens.view username state))
-    putStrLn ("Password: " ++ show (Lens.view password state))
-    putStrLn ("Remember password? " ++ show (Lens.view rememberPassword state))
-    pure state
+    let theName = Lens.view username state
+    let thePwd = Lens.view password state
+    if theName == "admin" && thePwd == "pwd"
+      then void $ alterStore App.store (App.UserLogin theName thePwd)
+      else pure ()
+    pure . Lens.set password "" $ state

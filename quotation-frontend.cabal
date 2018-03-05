@@ -42,6 +42,12 @@ library
     build-depends: ghcjs-base
   ghc-options: -Wall
   default-language: Haskell2010
+  default-extensions:
+      DeriveAnyClass
+    , DeriveGeneric
+    , OverloadedStrings
+    , TemplateHaskell
+    , TypeFamilies
 
 executable app
   if !impl(ghcjs)
@@ -53,7 +59,14 @@ executable app
       base
     , quotation-frontend
     , react-flux
+  ghc-options: -Wall
   default-language: Haskell2010
+  default-extensions:
+      DeriveAnyClass
+    , DeriveGeneric
+    , OverloadedStrings
+    , TemplateHaskell
+    , TypeFamilies
 
 test-suite app-test
   type: exitcode-stdio-1.0

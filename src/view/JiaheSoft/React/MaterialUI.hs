@@ -21,6 +21,7 @@ module JiaheSoft.React.MaterialUI
   , checkbox_
   , chip_
   , dialog_
+  , dialogTitle_
   , divider_
   , drawer_
   , expansionPanel_
@@ -98,6 +99,9 @@ chip_ = muiClass "Chip"
 
 dialog_ :: [PropertyOrHandler handler] -> ReactElementM handler () -> ReactElementM handler ()
 dialog_ = muiClass "Dialog"
+
+dialogTitle_ :: [PropertyOrHandler handler] -> ReactElementM handler () -> ReactElementM handler ()
+dialogTitle_ = muiClass "DialogTitle"
 
 divider_ :: [PropertyOrHandler handler] -> ReactElementM handler () -> ReactElementM handler ()
 divider_ = muiClass "Divider"

@@ -7,18 +7,18 @@ module JiaheSoft.Quotation.View.Login
 import           JiaheSoft.Quotation.View.Import
 
 import qualified Control.Lens                    as Lens
-import           Data.String                     (fromString)
-import           Data.Text                       as Text
 import           JiaheSoft.React.Common.Centered (centered_)
 import qualified JiaheSoft.React.MaterialUI      as MUI
 
-import           JiaheSoft.Quotation.Model.User  (User)
-import qualified JiaheSoft.Quotation.Model.User  as User
 import qualified JiaheSoft.Quotation.Store.Login as Login
 
-loginView :: ReactView ()
-loginView = defineControllerView "Login" Login.store $ \state () ->
+loginView :: ReactView Bool
+loginView = defineControllerView "Login" Login.store $ \state open ->
+  MUI.dialog_
+    [ "open" @= open
+    ] $
   centered_ "" $ do
+    MUI.dialogTitle_ [] "登录"
     let username = Lens.view Login.username state
     let password = Lens.view Login.password state
     form_ [] $ do
@@ -45,11 +45,13 @@ loginView = defineControllerView "Login" Login.store $ \state () ->
     MUI.button_
       [ "variant" $= "raised"
       , "color" $= "primary"
+      , "fullWidth" @= True
       , onClick handleLogin
       ] "登录"
 
-login_ :: ReactElementM eventHandler ()
-login_ = view loginView () mempty
+login_ :: Bool -- ^open the dialog?
+       -> ReactElementM eventHandler ()
+login_ open = view loginView open mempty
 
 handleUsernameChange :: Event -> ViewEventHandler
 handleUsernameChange event = Login.dispatch $
