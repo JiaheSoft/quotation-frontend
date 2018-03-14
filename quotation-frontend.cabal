@@ -21,14 +21,28 @@ library
     , lens
     , deepseq
     , aeson
+    , servant
+    , servant-client
+    , http-client
+    , mtl
+    , transformers
+    , async
   exposed-modules:
       JiaheSoft.Quotation.Store.App
     , JiaheSoft.Quotation.Store.Login
     , JiaheSoft.Quotation.Model.User
+    , JiaheSoft.Quotation.Model.AuthToken
+    , JiaheSoft.Quotation.Service.Login
+    , JiaheSoft.Quotation.Service
+    , JiaheSoft.Quotation.API.Login
+    , JiaheSoft.Async
   other-modules:
       JiaheSoft.Quotation.Import
     , JiaheSoft.Quotation.Store.Import
     , JiaheSoft.Quotation.Model.Import
+    , JiaheSoft.Quotation.API.Import
+    , JiaheSoft.Quotation.Service.Import
+    , JiaheSoft.Quotation.API.Common
   if impl(ghcjs)
     hs-source-dirs: src/view
     exposed-modules:

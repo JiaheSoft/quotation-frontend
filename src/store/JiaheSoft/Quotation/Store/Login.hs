@@ -6,26 +6,41 @@ module JiaheSoft.Quotation.Store.Login
   , username
   , password
   , rememberPassword
+  , status
   , Action(..)
   , store
   , dispatch
+  , Status(..)
+  , isNotLoggedIn
+  , isLoggingIn
+  , isLoginFailed
   ) where
 
-import qualified Control.Lens                     as Lens
+import qualified Control.Lens                      as Lens
 import           JiaheSoft.Quotation.Store.Import
 
-import qualified JiaheSoft.Quotation.Store.App    as App
+import qualified JiaheSoft.Quotation.Service.Login as LoginService
+import qualified JiaheSoft.Quotation.Store.App     as App
+
+{-|
+  Represent the current login status
+-}
+data Status = NotLoggedIn
+            | LoggingIn
+            | LoginFailed
+              deriving (Show, Typeable)
 
 data State = State
   { _username         :: !Text
   , _password         :: !Text
   , _rememberPassword :: !Bool
+  , _status           :: !Status
   } deriving (Show, Typeable)
 
 makeLenses ''State
 
 store :: ReactStore State
-store = mkStore (State "" "" True)
+store = mkStore (State "" "" True NotLoggedIn)
 
 data Action =
     ChangeUsername Text
@@ -46,7 +61,20 @@ instance StoreData State where
   transform Login state = do
     let theName = Lens.view username state
     let thePwd = Lens.view password state
-    if theName == "admin" && thePwd == "pwd"
-      then void $ alterStore App.store (App.UserLogin theName thePwd)
-      else pure ()
+    alterStore App.store (App.UserLogin theName thePwd onLoginFinish)
     pure . Lens.set password "" $ state
+
+onLoginFinish :: LoginService.Result' -> IO ()
+onLoginFinish = undefined
+
+isNotLoggedIn :: Status -> Bool
+isNotLoggedIn NotLoggedIn = True
+isNotLoggedIn _           = False
+
+isLoggingIn :: Status -> Bool
+isLoggingIn LoggingIn = True
+isLoggingIn _         = False
+
+isLoginFailed :: Status -> Bool
+isLoginFailed LoginFailed = True
+isLoginFailed _           = False
