@@ -1,7 +1,8 @@
 packages:
 - .
-- location: libs/react-flux-1.2.4
-  extra-dep: true
+extra-deps:
+- git: git@github.com:JiaheSoft/react-flux.git
+  commit: c33d5d812e16371429dbdbeac42a8b60b241d5fb
 flags: {}
 
 resolver: lts-6.30
