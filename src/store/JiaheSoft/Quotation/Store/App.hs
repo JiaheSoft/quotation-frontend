@@ -38,6 +38,8 @@ data Action =
     UserLogin Text Text (Either Text () -> IO ())
   -- | Logout
   | UserLogout
+  -- | Change user info in this store directly
+  | UpdateUser User
     deriving (Typeable, Generic, NFData)
 
 instance StoreData State where
@@ -49,20 +51,23 @@ instance StoreData State where
                    (Lens.view httpManager state)
                    (Lens.view serverBaseUrl state)
                    Nothing
-    undefined
-    -- asyncWithCallback
-    --   (runReaderT (LoginService.login credential) config)
-    --   (onFinish . fmap (const ()) . resultToEither)
-    -- pure state
-
-resultToEither :: LoginService.Result a -> Either Text a
-resultToEither (LoginService.Success x)   = Right x
-resultToEither (LoginService.Failure msg) = Left msg
+    void $ asyncWithCallback
+      (runReaderT (LoginService.login credential) config)
+      $ \result -> do
+        case result of
+          (LoginService.Success token) -> do
+            alterStore store (UpdateUser $ User.makeUser username password (Just token))
+            onFinish (Right ())
+          (LoginService.Failure msg) -> do
+            onFinish (Left msg)
+    pure state
+  transform (UpdateUser newUser) state = pure $ Lens.set user (Just newUser) state
 
 {-# NOINLINE store #-}
 store :: ReactStore State
 store = unsafePerformIO $ do
-  theManager <- HTTP.newManager HTTP.defaultManagerSettings
+  let httpSettings = HTTP.defaultManagerSettings { HTTP.managerResponseTimeout = Just 5000000 }
+  theManager <- HTTP.newManager httpSettings
   let theBaseUrl = BaseUrl Http "47.93.31.73" 80 "api"
   pure . mkStore $ State Nothing theManager theBaseUrl
 

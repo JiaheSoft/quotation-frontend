@@ -21,7 +21,8 @@ data User = User
 
 makeUser :: Text -- ^username
          -> Text -- ^password
+         -> Maybe AuthToken
          -> User -- ^the result
-makeUser name pwd = User name pwd Nothing
+makeUser = User
 
 makeLenses ''User

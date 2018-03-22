@@ -8,6 +8,8 @@ module JiaheSoft.Quotation.API.Login
   ( API
   , api
   , Credential
+  , name
+  , password
   , makeCredential
   , Result(..)
   , AuthToken'(..)

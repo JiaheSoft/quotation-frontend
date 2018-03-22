@@ -16,11 +16,11 @@ module JiaheSoft.Quotation.Store.Login
   , isLoginFailed
   ) where
 
-import qualified Control.Lens                      as Lens
+import qualified Control.Lens                     as Lens
+import qualified Data.Text.IO                     as Text
 import           JiaheSoft.Quotation.Store.Import
 
-import qualified JiaheSoft.Quotation.Service.Login as LoginService
-import qualified JiaheSoft.Quotation.Store.App     as App
+import qualified JiaheSoft.Quotation.Store.App    as App
 
 {-|
   Represent the current login status
@@ -62,10 +62,11 @@ instance StoreData State where
     let theName = Lens.view username state
     let thePwd = Lens.view password state
     alterStore App.store (App.UserLogin theName thePwd onLoginFinish)
-    pure . Lens.set password "" $ state
+    pure state
 
-onLoginFinish :: LoginService.Result' -> IO ()
-onLoginFinish = undefined
+onLoginFinish :: Either Text () -> IO ()
+onLoginFinish (Right _)     = Text.putStrLn "Login successfully"
+onLoginFinish (Left errMsg) = Text.putStrLn ("Error: " <> errMsg)
 
 isNotLoggedIn :: Status -> Bool
 isNotLoggedIn NotLoggedIn = True

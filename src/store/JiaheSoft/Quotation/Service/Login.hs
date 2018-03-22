@@ -7,10 +7,8 @@ module JiaheSoft.Quotation.Service.Login
 
 import qualified Control.Lens                        as Lens
 import           Control.Monad.Except
-import           Data.Either                         (either)
 import           JiaheSoft.Quotation.Model.AuthToken
 import           JiaheSoft.Quotation.Service.Import
-import           Servant.Client
 
 import           JiaheSoft.Quotation.API.Login
 

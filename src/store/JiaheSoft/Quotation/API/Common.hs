@@ -2,7 +2,7 @@ module JiaheSoft.Quotation.API.Common
   ( Result(..)
   ) where
 
-import           JiaheSoft.Quotation.API.Import hiding (Success)
+import           JiaheSoft.Quotation.API.Import
 
 data Result a = Success a | Failure Text
   deriving (Show, Eq)
@@ -15,5 +15,5 @@ instance FromJSON a => FromJSON (Result a) where
       else Failure <$> obj .: "MsgCode"
 
 instance Functor Result where
-  fmap f (Failure errMsg) = Failure errMsg
+  fmap _ (Failure errMsg) = Failure errMsg
   fmap f (Success x)      = Success (f x)
