@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Reboot } from "material-ui";
+import { CssBaseline } from "material-ui";
 
 import Login from "./Login";
 import TopBar from "./topbar/TopBar";
@@ -52,7 +52,7 @@ export default class App extends React.Component<{}, AppState> {
   public render(): React.ReactNode {
     return (
       <div>
-        <Reboot />
+        <CssBaseline/>
         <MuiThemeProvider theme={theme}>
           {this.state.page}
         </MuiThemeProvider>
